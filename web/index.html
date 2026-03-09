@@ -349,6 +349,58 @@ select.form-input{appearance:none}
 /* ── Quick edit dose modal ── */
 .quick-edit-row{display:flex;gap:8px;align-items:center;margin-bottom:10px}
 .quick-edit-row label{font-size:.8rem;font-weight:700;color:var(--text);white-space:nowrap;min-width:80px}
+
+/* ─── ONBOARDING ─── */
+#pageOnboard{background:linear-gradient(155deg,#0d2137 0%,#1a5276 55%,#117a65 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;text-align:center;color:#fff}
+.ob-logo{font-size:4.5rem;margin-bottom:16px;display:block;animation:obFloat 3s ease-in-out infinite}
+@keyframes obFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.ob-title{font-size:1.6rem;font-weight:900;margin-bottom:8px;line-height:1.25}
+.ob-sub{font-size:.85rem;opacity:.78;margin-bottom:24px;line-height:1.6}
+.ob-card{background:rgba(255,255,255,.1);backdrop-filter:blur(16px);border-radius:20px;padding:22px 18px;width:100%;max-width:360px;border:1px solid rgba(255,255,255,.18)}
+.ob-card .form-label{color:rgba(255,255,255,.8)}
+.ob-card .form-input{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff}
+.ob-card .form-input::placeholder{color:rgba(255,255,255,.45)}
+.ob-card select option{background:#1a5276;color:#fff}
+.ob-btn{width:100%;background:linear-gradient(135deg,#00b894,#00cec9);border:none;border-radius:14px;padding:14px;color:#fff;font-family:'Cairo',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;box-shadow:0 6px 18px rgba(0,184,148,.4);margin-top:6px;letter-spacing:.3px}
+/* ─── STATS CANVAS ─── */
+.stat-period-bar{display:flex;gap:6px;margin-bottom:14px}
+.stat-period-bar .tab-btn{flex:1;padding:8px 4px}
+.ring-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center}
+.ring-center{position:absolute;text-align:center;pointer-events:none}
+.ring-pct-num{font-size:1.5rem;font-weight:900;color:var(--primary)}
+.ring-pct-lbl{font-size:.62rem;color:var(--muted);font-weight:700}
+/* ─── VACCINE INTERACTIVE ─── */
+.vacc-progress-bar{background:rgba(255,255,255,.2);border-radius:4px;height:8px;margin-top:6px}
+.vacc-progress-fill{height:100%;background:#55efc4;border-radius:4px;transition:width .8s}
+.vacc-group-hdr{display:flex;align-items:center;gap:8px;margin:14px 0 8px}
+.vacc-age-badge{border-radius:10px;padding:5px 12px;font-size:.76rem;font-weight:700;color:#fff}
+.vacc-age-date{font-size:.7rem;font-weight:600}
+.vacc-row{background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;align-items:flex-start;gap:11px}
+.vacc-row-left{font-size:1.3rem;flex-shrink:0;margin-top:2px}
+.vacc-row-info{flex:1}
+.vacc-row-name{font-size:.87rem;font-weight:700;color:#2c3e50;margin-bottom:2px}
+.vacc-row-desc{font-size:.71rem;color:#7f8c8d;line-height:1.4}
+.vacc-row-status{font-size:.69rem;font-weight:700;margin-top:3px}
+.vacc-check-btn{width:34px;height:34px;border-radius:50%;border:2.5px solid #d0ede6;background:transparent;font-size:.95rem;cursor:pointer;flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center;color:transparent;margin-top:2px}
+.vacc-check-btn.done{background:var(--teal);border-color:var(--teal);color:#fff}
+/* ─── DOSE CALCULATOR ─── */
+.calc-result-card{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 3px 12px rgba(0,0,0,.07)}
+.calc-drug-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.calc-drug-icon{font-size:1.5rem}
+.calc-drug-name{font-size:.87rem;font-weight:800}
+.calc-dose-row{background:#f8fffe;border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.calc-dose-lbl{font-size:.78rem;font-weight:700;color:#2c3e50;margin-bottom:3px}
+.calc-dose-val{font-size:1.05rem;font-weight:900}
+.calc-ml-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.calc-ml-cell{border-radius:10px;padding:8px 10px;text-align:center;border:1px solid transparent}
+.calc-ml-lbl{font-size:.68rem;color:#5d6d7e;margin-bottom:2px}
+.calc-ml-val{font-size:1rem;font-weight:900}
+.calc-warn{background:#fff3cd;border-radius:8px;padding:8px 10px;font-size:.73rem;color:#856404;font-weight:600}
+/* ─── STREAK CALENDAR ─── */
+.streak-cal{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:12px}
+.streak-dot{width:19px;height:19px;border-radius:4px}
+/* ─── PROFILE ONBOARD CHECK ─── */
+.nav-bar{display:flex}
 </style>
 </head>
 <body>
@@ -403,6 +455,57 @@ select.form-input{appearance:none}
 </div>
 
 <!-- ═══ PAGE: HOME ═══ -->
+<!-- ═══ PAGE: ONBOARDING (first run) ═══ -->
+<div class="page" id="pageOnboard">
+  <span class="ob-logo">💊</span>
+  <div class="ob-title">مرحباً بك في<br><span style="color:#55efc4">FollowUpDose</span></div>
+  <div class="ob-sub">مُذكِّرك الذكي لأدوية طفلك<br>مع التطعيمات وفق وزارة الصحة المصرية 🇪🇬</div>
+  <div class="ob-card">
+    <div class="form-group">
+      <label class="form-label">اسم الطفل / المريض ✱</label>
+      <input class="form-input" id="ob_name" placeholder="مثال: أحمد محمد">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">تاريخ الميلاد</label>
+        <input class="form-input" type="date" id="ob_dob">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الجنس</label>
+        <select class="form-input" id="ob_gender">
+          <option value="ذكر">ذكر 👦</option>
+          <option value="أنثى">أنثى 👧</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">الوزن (كجم)</label>
+        <input class="form-input" type="number" id="ob_weight" placeholder="3.5" step="0.1">
+      </div>
+      <div class="form-group">
+        <label class="form-label">فصيلة الدم</label>
+        <select class="form-input" id="ob_blood">
+          <option value="">—</option>
+          <option>A+</option><option>A-</option>
+          <option>B+</option><option>B-</option>
+          <option>AB+</option><option>AB-</option>
+          <option>O+</option><option>O-</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">الطبيب المعالج (اختياري)</label>
+      <input class="form-input" id="ob_doctor" placeholder="د. اسم الطبيب">
+    </div>
+    <div class="form-group" style="margin-bottom:4px">
+      <label class="form-label">المستشفى / العيادة (اختياري)</label>
+      <input class="form-input" id="ob_hospital" placeholder="مستشفى / عيادة">
+    </div>
+    <button class="ob-btn" onclick="finishOnboarding()">ابدأ الآن 🚀</button>
+  </div>
+</div>
+
 <div class="page active" id="pageHome">
   <div class="header">
     <div class="header-top">
@@ -505,15 +608,45 @@ select.form-input{appearance:none}
     <div style="font-size:.75rem;opacity:.85;margin-top:3px">تحليل الالتزام بالدواء</div>
   </div>
   <div class="content" style="padding-top:16px">
-    <div class="big-stat-grid" id="bigStatGrid"></div>
-    <div class="chart-card">
-      <h3>📅 الجرعات - آخر 7 أيام</h3>
-      <div class="bar-chart" id="weekBarChart"></div>
+    <div class="stat-period-bar">
+      <button class="tab-btn active" id="stp7"  onclick="switchStatPeriod(7,this)">7 أيام</button>
+      <button class="tab-btn" id="stp30" onclick="switchStatPeriod(30,this)">30 يوم</button>
+      <button class="tab-btn" id="stp90" onclick="switchStatPeriod(90,this)">90 يوم</button>
     </div>
+    <div class="big-stat-grid" id="bigStatGrid"></div>
+
+    <!-- Adherence ring -->
+    <div class="chart-card" style="text-align:center;padding:20px 16px">
+      <h3 style="margin-bottom:16px">🎯 نسبة الالتزام الكلية</h3>
+      <div class="ring-wrap">
+        <canvas id="ringCanvas" width="160" height="160"></canvas>
+        <div class="ring-center">
+          <div class="ring-pct-num" id="ringPct">--%</div>
+          <div class="ring-pct-lbl">التزام</div>
+        </div>
+      </div>
+      <div id="ringMsg" style="margin-top:10px;font-size:.82rem;color:var(--muted)"></div>
+    </div>
+
+    <!-- Bar chart canvas -->
+    <div class="chart-card">
+      <h3>📅 الجرعات اليومية</h3>
+      <canvas id="barCanvas" style="width:100%;height:150px;display:block"></canvas>
+    </div>
+
     <div class="chart-card">
       <h3>💊 الالتزام لكل دواء</h3>
       <div id="medAdherenceList"></div>
     </div>
+
+    <!-- Streak -->
+    <div class="chart-card" style="text-align:center">
+      <h3>🔥 سلسلة الأيام المتتالية</h3>
+      <div id="streakBig" style="font-size:3rem;font-weight:900;color:var(--gold);margin:10px 0">0</div>
+      <div style="font-size:.8rem;color:var(--muted);margin-bottom:4px">يوم متتالي من الالتزام</div>
+      <div class="streak-cal" id="streakCal"></div>
+    </div>
+
     <div class="chart-card">
       <h3>⏰ أفضل وقت لأخذ الدواء</h3>
       <div id="bestTimeStats" style="font-size:.82rem;color:var(--muted)"></div>
@@ -528,7 +661,8 @@ select.form-input{appearance:none}
     <p>التطعيمات وفق وزارة الصحة المصرية + نصائح طبية</p>
     <div class="tab-bar">
       <button class="tab-btn active" onclick="switchInfoTab('vaccines', this)">💉 التطعيمات</button>
-      <button class="tab-btn" onclick="switchInfoTab('medicines', this)">💊 أدوية آمنة</button>
+      <button class="tab-btn" onclick="switchInfoTab('calc', this)">🧮 حاسبة الجرعة</button>
+      <button class="tab-btn" onclick="switchInfoTab('medicines', this)">💊 أدوية</button>
       <button class="tab-btn" onclick="switchInfoTab('tips', this)">📋 نصائح</button>
     </div>
   </div>
@@ -541,6 +675,37 @@ select.form-input{appearance:none}
         <span>جدول التطعيمات الوطني المصري - وزارة الصحة والسكان 2024</span>
       </div>
       <div class="vacc-timeline" id="vaccineTimeline"></div>
+    </div>
+
+
+    <!-- DOSE CALC TAB -->
+    <div class="info-section" id="tabCalc">
+      <div class="info-box" style="background:#e8f5e9;border:1px solid #a5d6a7;margin-bottom:14px">
+        <span>⚕️</span><span>جرعات إرشادية حسب الوزن. استشر طبيب الأطفال دائماً قبل أي دواء.</span>
+      </div>
+      <div class="card" style="border-top:4px solid var(--gold);margin-bottom:14px;padding:14px 16px">
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">وزن الطفل (كجم)</label>
+            <input class="form-input" type="number" id="calcWt" placeholder="مثال: 7.5" step="0.1" oninput="renderDoseCalc()">
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">الفئة العمرية</label>
+            <select class="form-input" id="calcAgeGrp" onchange="renderDoseCalc()">
+              <option value="">اختر العمر</option>
+              <option value="nb">حديث ولادة (0-28 يوم)</option>
+              <option value="1m">1-3 أشهر</option>
+              <option value="3m">3-6 أشهر</option>
+              <option value="6m">6-12 شهر</option>
+              <option value="1y">1-2 سنة</option>
+              <option value="2y">2-6 سنوات</option>
+              <option value="6y">6-12 سنة</option>
+            </select>
+          </div>
+        </div>
+        <button id="calcAutofillBtn" onclick="calcAutofill()" style="display:none;margin-top:10px;background:var(--teal-light);border:none;color:var(--teal-dark);border-radius:10px;padding:8px 14px;font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer">✨ استخدام بيانات الطفل تلقائياً</button>
+      </div>
+      <div id="doseCalcOut"></div>
     </div>
 
     <!-- MEDICINES TAB -->
@@ -2408,6 +2573,427 @@ renderDay();
 renderProfile();
 renderNewbornInfo();
 renderSettings();
+
+
+// ═══════════════════════════════════════════════════════════════════
+//  ONBOARDING
+// ═══════════════════════════════════════════════════════════════════
+(function initApp(){
+  const prof = JSON.parse(localStorage.getItem('profile_v4')||'{}');
+  const nb = document.querySelector('.nav-bar');
+  if(!prof.name){
+    document.getElementById('pageOnboard').classList.add('active');
+    document.getElementById('pageHome').classList.remove('active');
+    if(nb) nb.style.display='none';
+  } else {
+    document.getElementById('pageOnboard').style.display='none';
+    if(nb) nb.style.display='';
+  }
+})();
+
+function finishOnboarding(){
+  const name = (document.getElementById('ob_name').value||'').trim();
+  if(!name){ alert('يرجى إدخال اسم الطفل'); return; }
+  profile.name     = name;
+  profile.dob      = document.getElementById('ob_dob').value;
+  profile.gender   = document.getElementById('ob_gender').value;
+  profile.weight   = document.getElementById('ob_weight').value;
+  profile.bloodType= document.getElementById('ob_blood').value;
+  profile.doctor   = (document.getElementById('ob_doctor').value||'').trim();
+  profile.hospital = (document.getElementById('ob_hospital').value||'').trim();
+  save();
+  document.getElementById('pageOnboard').style.display='none';
+  const nb=document.querySelector('.nav-bar');
+  if(nb) nb.style.display='';
+  navigateTo('pageHome');
+  renderProfile();
+  setTimeout(()=>{ renderNewbornInfo(); _checkCalcAutofill(); },120);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  STATISTICS — canvas ring + bar + streak
+// ═══════════════════════════════════════════════════════════════════
+let _statPeriod = 7;
+
+function switchStatPeriod(days, btn){
+  _statPeriod = days;
+  document.querySelectorAll('.stat-period-bar .tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderStats();
+}
+
+// Wrap the original renderStats
+const _origRS = renderStats;
+renderStats = function(){
+  _origRS();
+  _drawRingCanvas();
+  _drawBarCanvas();
+  _drawStreakCal();
+};
+
+function _statsDateRange(){
+  const arr=[];
+  for(let i=_statPeriod-1;i>=0;i--){
+    const d=new Date(); d.setDate(d.getDate()-i); arr.push(d);
+  }
+  return arr;
+}
+
+function _drawRingCanvas(){
+  const canvas=document.getElementById('ringCanvas');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d'), W=160, H=160, cx=80, cy=80, r=62, lw=13;
+  ctx.clearRect(0,0,W,H);
+  const pct=calcOverallAdherence();
+  document.getElementById('ringPct').textContent=pct+'%';
+  const msg = pct>=80?'🎉 ممتاز! استمر هكذا':pct>=60?'👍 جيد، يمكن تحسينه':pct>=40?'⚠️ يحتاج مزيداً من الاهتمام':'❌ يرجى الالتزام بالمواعيد';
+  const el=document.getElementById('ringMsg'); if(el) el.textContent=msg;
+  // BG ring
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.strokeStyle='#e8f0ec'; ctx.lineWidth=lw; ctx.stroke();
+  // Value arc
+  const sa=-Math.PI/2, ea=sa+(pct/100)*Math.PI*2;
+  const g=ctx.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,'#1a5276'); g.addColorStop(1,'#00b894');
+  ctx.beginPath(); ctx.arc(cx,cy,r,sa,ea);
+  ctx.strokeStyle=pct>=60?g:pct>=40?'#f39c12':'#e74c3c';
+  ctx.lineWidth=lw; ctx.lineCap='round'; ctx.stroke();
+}
+
+function _drawBarCanvas(){
+  const canvas=document.getElementById('barCanvas');
+  if(!canvas) return;
+  const dpr=window.devicePixelRatio||1;
+  const cssW=canvas.parentElement.clientWidth-32||340;
+  const cssH=150;
+  canvas.style.width=cssW+'px'; canvas.style.height=cssH+'px';
+  canvas.width=cssW*dpr; canvas.height=cssH*dpr;
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  const W=cssW, H=cssH;
+  ctx.clearRect(0,0,W,H);
+
+  const showDays=Math.min(_statPeriod,14);
+  const dates=[];
+  for(let i=showDays-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);dates.push(d);}
+  const today=dayKey(new Date());
+  const dayAr=['أح','اث','ث','أر','خ','ج','س'];
+  const bw=Math.floor((W-(showDays+1)*3)/showDays);
+  const maxH=H-24;
+
+  dates.forEach((d,i)=>{
+    const dk=dayKey(d);
+    let t=0,tk=0;
+    medicines.forEach(m=>{
+      const doses=getDosesForDay(m,d);
+      t+=doses.length;
+      tk+=doses.filter(dose=>takenLog[takenKey(m.id,dk,dose.time)]).length;
+    });
+    const pct=t?Math.round(tk/t*100):0;
+    const bH=Math.max(4,Math.round(pct/100*maxH));
+    const x=3+i*(bw+3), y=H-20-bH;
+    const isToday=dk===today;
+    // gradient bar
+    const gr=ctx.createLinearGradient(x,y,x,y+bH);
+    const c1=pct>=80?'#00b894':pct>=50?'#f39c12':'#e74c3c';
+    const c2=pct>=80?'#117a65':pct>=50?'#d35400':'#c0392b';
+    gr.addColorStop(0,c1); gr.addColorStop(1,c2);
+    ctx.fillStyle=gr;
+    ctx.beginPath();
+    if(ctx.roundRect) ctx.roundRect(x,y,bw,bH,3);
+    else ctx.rect(x,y,bw,bH);
+    ctx.fill();
+    if(isToday){ ctx.strokeStyle='rgba(255,255,255,.5)'; ctx.lineWidth=1.5; ctx.stroke(); }
+    // pct text
+    if(pct>0&&bH>14){
+      ctx.fillStyle='#fff'; ctx.font=`bold ${bw>18?9:7}px Cairo,sans-serif`;
+      ctx.textAlign='center'; ctx.fillText(pct+'%',x+bw/2,y+bH-3);
+    }
+    // day label
+    ctx.fillStyle=isToday?'#1a5276':'#7aada0';
+    ctx.font=`${isToday?'bold ':''} 9px Cairo,sans-serif`;
+    ctx.textAlign='center'; ctx.fillText(dayAr[d.getDay()],x+bw/2,H-5);
+  });
+}
+
+function _drawStreakCal(){
+  const streak=calcStreak();
+  const el=document.getElementById('streakBig'); if(el) el.textContent=streak;
+  const cal=document.getElementById('streakCal'); if(!cal) return;
+  const today=dayKey(new Date());
+  const cells=[];
+  for(let i=27;i>=0;i--){
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const dk=dayKey(d);
+    let t=0,tk=0;
+    medicines.forEach(m=>{
+      const doses=getDosesForDay(m,d);
+      t+=doses.length;
+      tk+=doses.filter(dose=>takenLog[takenKey(m.id,dk,dose.time)]).length;
+    });
+    const pct=t?Math.round(tk/t*100):null;
+    const bg=pct===null?'#e8f0ed':pct>=80?'#00b894':pct>=50?'#f39c12':'#e74c3c';
+    const outline=dk===today?'outline:2.5px solid #1a5276;':'';
+    const tip=`${d.getDate()}/${d.getMonth()+1}: ${pct!==null?pct+'%':'لا بيانات'}`;
+    cells.push(`<div class="streak-dot" title="${tip}" style="background:${bg};${outline}"></div>`);
+  }
+  cal.innerHTML=cells.join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  VACCINE INTERACTIVE TRACKING
+// ═══════════════════════════════════════════════════════════════════
+let vaccDone=JSON.parse(localStorage.getItem('vaccDone_v1')||'{}');
+
+function saveVacc(){ localStorage.setItem('vaccDone_v1',JSON.stringify(vaccDone)); }
+
+function toggleVacc(key){
+  vaccDone[key]=!vaccDone[key];
+  saveVacc();
+  _renderVaccineInteractive();
+}
+
+// Override renderNewbornInfo to add interactive vaccines
+const _origRNI=renderNewbornInfo;
+renderNewbornInfo=function(){
+  _origRNI();
+  _renderVaccineInteractive();
+  _checkCalcAutofill();
+};
+
+const _ageOffsetM={
+  'عند الولادة':0,'الشهر الثاني':2,'الشهر الرابع':4,'الشهر السادس':6,
+  'الشهر التاسع':9,'الشهر الثاني عشر':12,'18 شهراً':18,
+  'سنة ونصف إلى سنتين':18,'قبل دخول المدرسة (6 سنوات)':72
+};
+const _arMonths=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+function _fmt(d){ return d?`${d.getDate()} ${_arMonths[d.getMonth()]} ${d.getFullYear()}`:''; }
+
+function _renderVaccineInteractive(){
+  const el=document.getElementById('vaccineTimeline'); if(!el) return;
+  const dob=profile.dob?new Date(profile.dob):null;
+  const now=new Date();
+
+  // group by age
+  const groups={};
+  egyptVaccines.forEach((v,i)=>{ if(!groups[v.age])groups[v.age]=[]; groups[v.age].push({...v,_i:i}); });
+
+  let total=0, done=0, html='';
+
+  Object.entries(groups).forEach(([age,list])=>{
+    const offM=_ageOffsetM[age]??-1;
+    let dueDate=null, status='';
+    if(dob&&offM>=0){
+      dueDate=new Date(dob); dueDate.setMonth(dueDate.getMonth()+offM);
+      const diff=Math.round((dueDate-now)/86400000);
+      status=diff< -30?'past':diff<30?'due':'future';
+    }
+    const colors={past:'#00b894',due:'#e74c3c',future:'#2980b9','':`#7f8c8d`};
+    const icons={past:'✅',due:'🔴',future:'🔵','':`📅`};
+    const c=colors[status], ic=icons[status];
+
+    html+=`<div class="vacc-group-hdr">
+      <div class="vacc-age-badge" style="background:${c}">${ic} ${age}</div>
+      ${dueDate?`<div class="vacc-age-date" style="color:${c}">${_fmt(dueDate)}</div>`:''}
+    </div>`;
+
+    list.forEach(v=>{
+      total++;
+      const key=`v_${v._i}`;
+      const isDone=!!vaccDone[key];
+      if(isDone) done++;
+      const bdrColor=isDone?'#00b894':status==='due'?'#e74c3c':'#d0ede6';
+      const statusHtml=isDone
+        ?`<div class="vacc-row-status" style="color:#00b894">✓ تم التطعيم</div>`
+        :status==='due'
+          ?`<div class="vacc-row-status" style="color:#e74c3c">⚠️ موعدك الآن!</div>`:'';
+      html+=`<div class="vacc-row" style="border-right:4px solid ${bdrColor}">
+        <div class="vacc-row-left">${isDone?'💉':'⚪'}</div>
+        <div class="vacc-row-info">
+          <div class="vacc-row-name">${v.name}</div>
+          <div class="vacc-row-desc">${v.desc}</div>
+          ${statusHtml}
+        </div>
+        <button class="vacc-check-btn${isDone?' done':''}" onclick="toggleVacc('${key}')">✓</button>
+      </div>`;
+    });
+  });
+
+  const pct=total?Math.round(done/total*100):0;
+  const summary=`<div style="background:linear-gradient(135deg,#1a5276,#2980b9);color:#fff;border-radius:14px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
+    <div style="flex:1">
+      <div style="font-size:.85rem;font-weight:700;margin-bottom:5px">تقدم التطعيمات: ${done} / ${total}</div>
+      <div class="vacc-progress-bar"><div class="vacc-progress-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div style="font-size:1.5rem;font-weight:900">${pct}%</div>
+  </div>`;
+
+  el.innerHTML=summary+html;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  DOSE CALCULATOR
+// ═══════════════════════════════════════════════════════════════════
+const _drugs=[
+  {name:'باراسيتامول شراب',icon:'🌡️',color:'#00b894',
+   mgPerKg:15,maxMgPerKg:75,maxDoses:5,intervalH:4,
+   ok:{nb:false,'1m':true,'3m':true,'6m':true,'1y':true,'2y':true,'6y':true},
+   forms:[{c:120,label:'شراب 120مجم/5مل',k:5/120},{c:250,label:'شراب 250مجم/5مل',k:5/250}],
+   note:'أأمن خافض حرارة للأطفال.',
+   warn:'⚠️ لا يُعطى لحديثي الولادة إلا بوصفة طبيب.'},
+
+  {name:'إيبوبروفين شراب',icon:'💊',color:'#e74c3c',
+   mgPerKg:10,maxMgPerKg:40,maxDoses:4,intervalH:6,
+   ok:{nb:false,'1m':false,'3m':false,'6m':true,'1y':true,'2y':true,'6y':true},
+   forms:[{c:100,label:'شراب 100مجم/5مل',k:5/100},{c:200,label:'شراب 200مجم/5مل',k:5/200}],
+   note:'خافض ومضاد التهاب.',
+   warn:'⚠️ ممنوع قبل 6 أشهر وعند الجفاف.'},
+
+  {name:'أموكسيسيلين معلق',icon:'🧪',color:'#9b59b6',
+   mgPerKg:25,maxMgPerKg:90,maxDoses:null,intervalH:8,
+   ok:{nb:false,'1m':false,'3m':true,'6m':true,'1y':true,'2y':true,'6y':true},
+   forms:[{c:125,label:'معلق 125مجم/5مل',k:5/125},{c:250,label:'معلق 250مجم/5مل',k:5/250}],
+   note:'مضاد حيوي. أكمل الدورة كاملة.',
+   warn:'⚠️ بوصفة طبيب فقط. تحقق من حساسية البنسلين.'},
+
+  {name:'سيتريزين قطرات',icon:'🌸',color:'#3498db',
+   mgPerKg:0.25,maxMgPerKg:null,maxDoses:1,intervalH:24,
+   ok:{nb:false,'1m':false,'3m':false,'6m':true,'1y':true,'2y':true,'6y':true},
+   forms:[{c:5,label:'قطرات 5مجم/مل',k:1/5}],
+   note:'مضاد حساسية، جرعة يومية واحدة.',
+   warn:'⚠️ قد يسبب نعاساً.'},
+
+  {name:'فيتامين D3 قطرات',icon:'☀️',color:'#f39c12',
+   fixedDose:{nb:400,'1m':400,'3m':400,'6m':400,'1y':400,'2y':600,'6y':600},
+   fixedUnit:'وحدة دولية / يوم',
+   ok:{nb:true,'1m':true,'3m':true,'6m':true,'1y':true,'2y':true,'6y':true},
+   note:'ضروري لبناء العظام، ابدأ من الأسبوع الأول.',
+   warn:'⚠️ لا تتجاوز 2000 وحدة يومياً تحت سنة.'},
+
+  {name:'قطرات الغاز (سيمثيكون)',icon:'💨',color:'#1abc9c',
+   fixedDose:{nb:40,'1m':40,'3m':40,'6m':40,'1y':40,'2y':40,'6y':40},
+   fixedMl:{nb:0.6,'1m':0.6,'3m':0.6,'6m':0.6,'1y':0.6,'2y':0.6,'6y':0.6},
+   fixedUnit:'مجم بعد كل رضعة',
+   ok:{nb:true,'1m':true,'3m':true,'6m':true,'1y':true,'2y':true,'6y':true},
+   note:'آمن من الولادة. يكسر فقاعات الهواء.',
+   warn:null},
+
+  {name:'محلول الإماهة ORS',icon:'💧',color:'#0984e3',
+   fixedDose:{nb:'50-100 مل/كجم','1m':'50-100 مل/كجم','3m':'50-100 مل/كجم',
+              '6m':'50-100 مل/كجم','1y':'50-100 مل/كجم','2y':'50-100 مل/كجم','6y':'50-100 مل/كجم'},
+   fixedUnit:'على 4 ساعات عند الإسهال',
+   ok:{nb:true,'1m':true,'3m':true,'6m':true,'1y':true,'2y':true,'6y':true},
+   note:'لعلاج الجفاف عند الإسهال.',
+   warn:'⚠️ لا يُستبدل بمحلول منزلي. راجع الطبيب عند الإسهال الشديد.'},
+];
+
+function _calcAgeGroup(dob){
+  if(!dob) return '';
+  const ms=new Date()-new Date(dob), days=ms/86400000;
+  const m=Math.floor(days/30.44);
+  if(days<28)return 'nb'; if(m<3)return '1m'; if(m<6)return '3m';
+  if(m<12)return '6m'; if(m<24)return '1y'; if(m<72)return '2y'; return '6y';
+}
+
+function _checkCalcAutofill(){
+  const btn=document.getElementById('calcAutofillBtn');
+  if(btn) btn.style.display=(profile.dob||profile.weight)?'inline-block':'none';
+}
+
+function calcAutofill(){
+  if(profile.weight) document.getElementById('calcWt').value=profile.weight;
+  if(profile.dob)    document.getElementById('calcAgeGrp').value=_calcAgeGroup(profile.dob);
+  renderDoseCalc();
+}
+
+function renderDoseCalc(){
+  const wt=parseFloat(document.getElementById('calcWt').value);
+  const ag=document.getElementById('calcAgeGrp').value;
+  const out=document.getElementById('doseCalcOut'); if(!out) return;
+  if(!wt||!ag||wt<=0){
+    out.innerHTML='<div class="info-box" style="color:var(--muted)">⬆️ أدخل وزن الطفل وعمره لحساب الجرعات</div>';
+    return;
+  }
+  let html='';
+  _drugs.forEach(drug=>{
+    if(!drug.ok[ag]) return;
+    const c=drug.color;
+    html+=`<div class="calc-result-card" style="border-top:4px solid ${c}">
+      <div class="calc-drug-header">
+        <div class="calc-drug-icon">${drug.icon}</div>
+        <div><div class="calc-drug-name" style="color:${c}">${drug.name}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${drug.note}</div></div>
+      </div>`;
+
+    if(drug.fixedDose){
+      const fd=drug.fixedDose[ag];
+      const ml=drug.fixedMl?drug.fixedMl[ag]:null;
+      html+=`<div class="calc-dose-row">
+        <div class="calc-dose-lbl">الجرعة الموصى بها:</div>
+        <div class="calc-dose-val" style="color:${c}">${fd} ${drug.fixedUnit}${ml?' — ('+ml+' مل)':''}</div>
+      </div>`;
+    } else {
+      const mg=Math.round(drug.mgPerKg*wt*10)/10;
+      const maxMg=drug.maxMgPerKg?Math.round(drug.maxMgPerKg*wt):null;
+      const finalMg=maxMg?Math.min(mg,maxMg):mg;
+      html+=`<div class="calc-dose-row">
+        <div class="calc-dose-lbl">الجرعة لوزن <span style="color:${c};font-weight:900">${wt} كجم</span>:</div>
+        <div class="calc-dose-val" style="color:${c}">${finalMg} مجم كل ${drug.intervalH} ساعات${drug.maxDoses?' (بحد أقصى '+drug.maxDoses+' مرات/يوم)':''}</div>
+      </div>`;
+      if(drug.forms){
+        html+='<div class="calc-ml-grid">';
+        drug.forms.forEach(f=>{
+          const ml=Math.round(finalMg*f.k*10)/10;
+          html+=`<div class="calc-ml-cell" style="background:${c}18;border-color:${c}44">
+            <div class="calc-ml-lbl">${f.label}</div>
+            <div class="calc-ml-val" style="color:${c}">${ml} مل</div>
+          </div>`;
+        });
+        html+='</div>';
+      }
+    }
+    if(drug.warn) html+=`<div class="calc-warn">${drug.warn}</div>`;
+    html+='</div>';
+  });
+  if(!html) html='<div class="info-box">⚠️ لا توجد أدوية متاحة لهذه الفئة. استشر الطبيب.</div>';
+  out.innerHTML=html;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  PATCH shareProfile to include vaccines
+// ═══════════════════════════════════════════════════════════════════
+const _origShare=shareProfile;
+shareProfile=function(){
+  const lines=['📋 ملف دواء الطفل — FollowUpDose','═══════════════════════════════'];
+  if(profile.name)      lines.push(`👶 الاسم: ${profile.name}`);
+  if(profile.dob)       lines.push(`🎂 العمر: ${calcAge(profile.dob)}`);
+  if(profile.weight)    lines.push(`⚖️ الوزن: ${profile.weight} كجم`);
+  if(profile.bloodType) lines.push(`🩸 فصيلة الدم: ${profile.bloodType}`);
+  if(profile.doctor)    lines.push(`👨‍⚕️ الطبيب: ${profile.doctor}`);
+  if(profile.hospital)  lines.push(`🏥 المستشفى: ${profile.hospital}`);
+  if(profile.allergies) lines.push(`⚠️ حساسية: ${profile.allergies}`);
+  lines.push('','💊 الأدوية الحالية:');
+  medicines.forEach(m=>{
+    const d=m.doseAmt?`${m.doseAmt} ${m.doseUnit||'مل'}`:(m.dose||'');
+    lines.push(`• ${m.icon||'💊'} ${m.name}${d?' — '+d:''} — كل ${m.interval} ساعة${m.notes?' ('+m.notes+')':''}`);
+  });
+  const tot=egyptVaccines.length;
+  const dn=egyptVaccines.filter((_,i)=>vaccDone[`v_${i}`]).length;
+  lines.push('','💉 التطعيمات: '+dn+'/'+tot+' ('+Math.round(dn/tot*100)+'%)');
+  lines.push('📊 الالتزام: '+calcOverallAdherence()+'%');
+  lines.push('─────────────────','تم الإرسال من تطبيق FollowUpDose');
+  const text=lines.join('\n');
+  if(navigator.share) navigator.share({title:'ملف دواء الطفل',text}).catch(()=>copyToClipboard(text));
+  else copyToClipboard(text);
+};
+
+// Patch navigateTo to draw canvases when switching to stats
+const _origNav=navigateTo;
+navigateTo=function(id){
+  _origNav(id);
+  if(id==='pageStats') setTimeout(()=>{ _drawRingCanvas(); _drawBarCanvas(); _drawStreakCal(); },80);
+};
 </script>
 
 <!-- PWA -->

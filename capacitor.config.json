@@ -1,17 +1,23 @@
 {
-  "appId": "com.followupdose.baby",
+  "appId": "com.followupdose.app",
   "appName": "مُذكِّر الدواء",
   "webDir": "web",
-  "android": {
-    "allowMixedContent": false,
-    "webContentsDebuggingEnabled": false,
-    "backgroundColor": "#1a5276"
-  },
+  "server": { "androidScheme": "https" },
+  "android": { "allowMixedContent": true },
   "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#1a5276",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    },
     "LocalNotifications": {
-      "smallIcon": "ic_stat_medicine",
-      "iconColor": "#1a5276",
-      "sound": "alarm"
+      "iconColor": "#00b894"
+    },
+    "StatusBar": {
+      "style": "dark",
+      "backgroundColor": "#1a5276"
     }
   }
 }

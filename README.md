@@ -1,64 +1,64 @@
-# 📱 مُذكِّر الدواء — الحصول على APK
+# 📱 FollowUpDose — مُذكِّر الدواء v2.0
 
-## ⚡ الطريقة الأسهل: GitHub Actions (مجاناً، بدون تثبيت أي شيء)
+## ✨ المميزات الجديدة في v2.0
 
-### الخطوة 1 — إنشاء حساب GitHub
-👉 https://github.com/signup (مجاني)
+| الميزة | التفاصيل |
+|--------|---------|
+| 🚀 **Onboarding** | شاشة إعداد أولي جميلة عند أول تشغيل |
+| 📊 **إحصائيات Canvas** | دائرة الالتزام + رسم بياني يومي + تقويم الأيام |
+| 💉 **تطعيمات تفاعلية** | تتبع اللقاحات + مواعيد حسب تاريخ الميلاد |
+| 🧮 **حاسبة الجرعات** | 7 أدوية شائعة محسوبة حسب وزن الطفل (بالمل) |
+| 📷 **صورة الدواء** | إضافة صورة لكل دواء |
+| 🔔 **أصوات مخصصة** | 6 أصوات تنبيه مختلفة + تحكم في الصوت |
+| 📤 **مشاركة الملف** | إرسال قائمة الأدوية + التطعيمات للطبيب |
 
-### الخطوة 2 — إنشاء repository جديد
-1. اضغط **New repository**
-2. اسمه: `followupdose`
-3. اجعله **Public**
-4. اضغط **Create repository**
+## 🏗️ بناء APK عبر GitHub Actions
 
-### الخطوة 3 — رفع الملفات
-**الطريقة السهلة (بدون Git):**
-1. افتح الـ repository الجديد
-2. اضغط **Add file → Upload files**
-3. اسحب وأسقط **كل محتويات** مجلد `FollowUpDose-Build`
-4. اضغط **Commit changes**
+### الخطوة 1: إنشاء Repository
+1. افتح [github.com/new](https://github.com/new)
+2. الاسم: `followupdose` | Public ✓
+3. اضغط **Create repository**
 
-### الخطوة 4 — GitHub يبني APK تلقائياً!
-1. اضغط على تبويب **Actions**
-2. هتشوف workflow اسمه **Build APK** شغّال
-3. استنى 3-5 دقائق
-4. لما يخلص، اضغط على الـ workflow
-5. تحت **Artifacts** → حمّل **FollowUpDose-APK**
-6. أو اضغط **Releases** وحمّل `app-debug.apk` مباشرة
+### الخطوة 2: رفع الملفات
+1. اضغط **Add file → Upload files**
+2. ارفع **كل محتويات هذا المجلد** (بما فيها `.github`)
+3. اضغط **Commit changes**
 
-### الخطوة 5 — ثبّت على تلفونك
-1. انقل `app-debug.apk` للتلفون
-2. افتح الملف
-3. لو ظهرت رسالة "Unknown source" → اضغط **Settings → Allow**
-4. اضغط **Install** ✅
+### الخطوة 3: انتظر البناء (3-5 دقائق)
+1. اضغط تبويب **Actions**
+2. انتظر ✅ Build APK
+3. اضغط على الـ workflow ← **Artifacts** → حمّل `FollowUpDose-APK`
+4. أو اضغط **Releases** وحمّل `app-debug.apk`
 
----
+### الخطوة 4: تثبيت على الهاتف
+```
+1. انقل app-debug.apk للهاتف
+2. الإعدادات ← الأمان ← مصادر غير معروفة ← السماح
+3. افتح الملف ← تثبيت ✅
+```
 
-## هيكل الملفات
-
+## 📁 هيكل المشروع
 ```
 FollowUpDose-Build/
-├── .github/
-│   └── workflows/
-│       └── build.yml      ← GitHub Actions
+├── .github/workflows/build.yml   ← GitHub Actions (يبني APK تلقائياً)
 ├── web/
-│   ├── index.html          ← التطبيق الرئيسي
-│   ├── sw.js
-│   ├── manifest.json
-│   └── icons/
-├── package.json
-└── capacitor.config.json
+│   ├── index.html                ← التطبيق الكامل (151KB)
+│   ├── manifest.json             ← PWA manifest
+│   ├── sw.js                     ← Service Worker
+│   └── icons/                   ← أيقونات 8 أحجام
+├── android/                     ← مشروع Android Gradle
+│   └── app/src/main/...
+├── package.json                  ← Capacitor dependencies
+├── capacitor.config.json         ← إعدادات Capacitor
+└── README.md
 ```
 
----
+## ⚡ مقارنة PWA vs APK
 
-## مميزات النسخة Android
-
-| الميزة | PWA | Android APK |
-|--------|-----|-------------|
-| منبه لما التطبيق مفتوح | ✅ | ✅ |
-| منبه لما التلفون مقفول الشاشة | ⚠️ | ✅ |
-| منبه لما التطبيق مغلق تماماً | ❌ | ✅ |
-| إشعار خارجي | ⚠️ | ✅ |
-| يكسر الصمت (Silent mode) | ❌ | ✅ |
+| الميزة | PWA | APK |
+|--------|-----|-----|
+| منبه والتطبيق مفتوح | ✅ | ✅ |
+| منبه والشاشة مقفولة | ⚠️ | ✅ |
+| منبه والتطبيق مغلق تماماً | ❌ | ✅ |
+| يكسر وضع الصمت | ❌ | ✅ |
 | يشتغل بدون نت | ✅ | ✅ |
