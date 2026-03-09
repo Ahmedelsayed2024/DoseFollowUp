@@ -1,0 +1,17 @@
+{
+  "appId": "com.followupdose.baby",
+  "appName": "مُذكِّر الدواء",
+  "webDir": "web",
+  "android": {
+    "allowMixedContent": false,
+    "webContentsDebuggingEnabled": false,
+    "backgroundColor": "#1a5276"
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_medicine",
+      "iconColor": "#1a5276",
+      "sound": "alarm"
+    }
+  }
+}

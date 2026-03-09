@@ -1,0 +1,2470 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="application-name" content="مُذكِّر الدواء">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="مُذكِّر الدواء">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a5276">
+<meta name="description" content="تطبيق متكامل لمتابعة أدوية الأطفال حديثي الولادة مع التطعيمات وفق وزارة الصحة المصرية">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>مُذكِّر الدواء 👶</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary:#1a5276;--primary-light:#2980b9;--primary-pale:#d6eaf8;
+  --teal:#00b894;--teal-dark:#00897b;--teal-light:#e0f7f4;
+  --coral:#e74c3c;--coral-light:#fdecea;
+  --gold:#f39c12;--gold-light:#fef9e7;
+  --purple:#8e44ad;--purple-light:#f5eef8;
+  --green:#27ae60;--green-light:#eafaf1;
+  --pink:#e91e8c;--pink-light:#fde8f4;
+  --bg:#f0f4f8;--card:#ffffff;--text:#1c2833;--muted:#7f8c8d;
+  --border:#dde6ed;--shadow:0 4px 20px rgba(26,82,118,.10);--radius:18px;
+  --nav-h:68px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Cairo','Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;padding-bottom:var(--nav-h)}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:var(--nav-h);background:#fff;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:150;box-shadow:0 -4px 20px rgba(26,82,118,.08)}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 12px;border-radius:12px;transition:all .2s;flex:1}
+.nav-item .nav-icon{font-size:1.4rem;transition:transform .2s}
+.nav-item .nav-lbl{font-size:.6rem;font-weight:700;color:var(--muted);transition:color .2s}
+.nav-item.active .nav-icon{transform:scale(1.15)}
+.nav-item.active .nav-lbl{color:var(--primary)}
+.nav-item.active{background:var(--primary-pale)}
+
+/* ── PAGES ── */
+.page{display:none;animation:fadeInPage .25s ease}
+.page.active{display:block}
+@keyframes fadeInPage{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 60%,#5dade2 100%);padding:48px 20px 20px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(26,82,118,.25)}
+.header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.header h1{font-size:1.4rem;font-weight:900;color:#fff;line-height:1.2}
+.header-sub{font-size:.72rem;color:rgba(255,255,255,.8);margin-top:2px}
+.header-actions{display:flex;gap:8px}
+.hdr-btn{background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);color:#fff;border-radius:50%;width:40px;height:40px;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:all .2s}
+.hdr-btn:active{transform:scale(.9)}
+.view-toggle{display:flex;background:rgba(255,255,255,.18);border-radius:12px;padding:4px;backdrop-filter:blur(6px)}
+.view-btn{flex:1;padding:8px;border:none;background:transparent;color:rgba(255,255,255,.75);font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;border-radius:9px;cursor:pointer;transition:all .2s}
+.view-btn.active{background:#fff;color:var(--primary);box-shadow:0 2px 10px rgba(0,0,0,.1)}
+
+/* ── CONTENT ── */
+.content{padding:16px 16px 20px}
+
+/* ── PROFILE CARD ── */
+.profile-hero{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);border-radius:var(--radius);padding:20px;margin-bottom:16px;color:#fff;position:relative;overflow:hidden}
+.profile-hero::after{content:'👶';position:absolute;right:-10px;top:-10px;font-size:5rem;opacity:.15;transform:rotate(-15deg)}
+.profile-avatar-wrap{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.profile-avatar{width:72px;height:72px;border-radius:50%;border:3px solid rgba(255,255,255,.6);object-fit:cover;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;flex-shrink:0;overflow:hidden}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.profile-name{font-size:1.3rem;font-weight:900}
+.profile-detail{font-size:.75rem;opacity:.85;margin-top:2px}
+.profile-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.p-chip{background:rgba(255,255,255,.2);border-radius:20px;padding:5px 12px;font-size:.72rem;font-weight:700;backdrop-filter:blur(4px)}
+.profile-share-btn{background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.5);color:#fff;border-radius:12px;padding:8px 16px;font-family:'Cairo',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;margin-top:12px;display:flex;align-items:center;gap:6px;transition:all .2s}
+.profile-share-btn:active{transform:scale(.97)}
+
+/* ── STAT CARDS ── */
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-card{background:#fff;border-radius:14px;padding:13px 8px;text-align:center;box-shadow:var(--shadow)}
+.stat-num{font-size:1.5rem;font-weight:900;color:var(--primary)}
+.stat-lbl{font-size:.65rem;color:var(--muted);font-weight:600;margin-top:1px}
+
+/* ── DAY NAV ── */
+.day-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;background:#fff;border-radius:var(--radius);padding:12px 16px;box-shadow:var(--shadow)}
+.day-nav button{background:var(--primary-pale);border:none;border-radius:10px;width:36px;height:36px;font-size:1.1rem;color:var(--primary);cursor:pointer;font-weight:700;transition:all .15s}
+.day-nav button:active{transform:scale(.9)}
+.day-label{font-size:.9rem;font-weight:700;color:var(--text);text-align:center}
+.day-label small{display:block;font-size:.7rem;color:var(--muted);font-weight:400;margin-top:1px}
+
+/* ── DOSE CARD ── */
+.sec-title{font-size:.9rem;font-weight:700;color:var(--text);margin:14px 0 8px;display:flex;align-items:center;gap:6px}
+.sec-title span{width:4px;height:16px;background:var(--primary);border-radius:4px;display:inline-block}
+.dose-card{background:#fff;border-radius:var(--radius);padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;cursor:pointer;border-right:4px solid var(--border);transition:all .2s;position:relative;overflow:hidden}
+.dose-card.taken{border-right-color:var(--teal);opacity:.75}
+.dose-card.upcoming{border-right-color:var(--primary-light)}
+.dose-card.missed{border-right-color:var(--coral)}
+.dose-card.rescheduled{border-right-color:var(--purple)}
+.dose-card.next-alarm{border-right-color:var(--gold);animation:pulse-card 1.5s infinite}
+@keyframes pulse-card{0%,100%{box-shadow:var(--shadow)}50%{box-shadow:0 0 0 4px rgba(243,156,18,.2)}}
+.med-pic{width:46px;height:46px;border-radius:12px;object-fit:cover;flex-shrink:0;border:2px solid var(--border)}
+.med-pic-placeholder{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.dose-card.taken .med-pic-placeholder{background:#e0f7f4}
+.dose-card.upcoming .med-pic-placeholder{background:var(--primary-pale)}
+.dose-card.missed .med-pic-placeholder{background:var(--coral-light)}
+.dose-card.next-alarm .med-pic-placeholder{background:var(--gold-light)}
+.dose-info{flex:1;min-width:0}
+.dose-name{font-size:.92rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dose-detail{font-size:.72rem;color:var(--muted);margin-top:2px}
+.dose-qty{font-size:.68rem;font-weight:700;color:var(--primary);background:var(--primary-pale);border-radius:6px;padding:2px 6px;margin-top:3px;display:inline-block}
+.dose-time{font-size:.88rem;font-weight:700;color:var(--primary);text-align:center;white-space:nowrap;min-width:52px;display:flex;flex-direction:column;align-items:center;line-height:1.2}
+.dose-time.missed{color:var(--coral)}
+.dose-time.taken{color:var(--teal-dark);opacity:.7}
+.t12-num{font-size:.9rem;font-weight:900}
+.t12-per{font-size:.7rem;font-weight:800;margin-top:1px;letter-spacing:.5px}
+.check-btn{width:30px;height:30px;border-radius:50%;border:2.5px solid var(--teal);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;flex-shrink:0;color:transparent}
+.check-btn.checked{background:var(--teal);color:#fff;border-color:var(--teal)}
+.check-btn:active{transform:scale(.85)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px)}
+.modal-overlay.open{display:flex;animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:#fff;border-radius:28px 28px 0 0;width:100%;max-width:430px;padding:22px 20px 36px;max-height:92vh;overflow-y:auto;animation:slideUp .25s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:4px;margin:0 auto 18px}
+.modal h2{font-size:1.1rem;font-weight:900;color:var(--text);margin-bottom:18px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:5px;display:block}
+.form-input{width:100%;border:2px solid var(--border);border-radius:12px;padding:11px 13px;font-family:'Cairo',sans-serif;font-size:.88rem;color:var(--text);background:#fff;outline:none;transition:border-color .2s;direction:rtl}
+.form-input:focus{border-color:var(--primary)}
+select.form-input{appearance:none}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.submit-btn{width:100%;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border:none;border-radius:14px;padding:14px;font-family:'Cairo',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:6px;transition:all .2s}
+.submit-btn:active{transform:scale(.98)}
+.delete-btn{background:var(--coral-light);border:none;color:var(--coral);border-radius:10px;padding:8px 14px;font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;margin-top:10px}
+.icon-picker{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.icon-opt{width:40px;height:40px;border-radius:10px;border:2px solid var(--border);background:var(--bg);cursor:pointer;font-size:1.3rem;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.icon-opt.selected{border-color:var(--primary);background:var(--primary-pale)}
+
+/* ── MEDICINE PHOTO UPLOAD ── */
+.photo-upload-area{border:2px dashed var(--border);border-radius:14px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;margin-top:6px}
+.photo-upload-area:hover{border-color:var(--primary);background:var(--primary-pale)}
+.photo-upload-area img{width:80px;height:80px;object-fit:cover;border-radius:10px;margin-bottom:6px}
+.photo-upload-area .ph-hint{font-size:.75rem;color:var(--muted);font-weight:600}
+
+/* ── ALARM TOAST ── */
+.alarm-toast{position:fixed;top:-140px;left:50%;transform:translateX(-50%);z-index:500;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border-radius:20px;padding:16px 18px;width:calc(100% - 24px);max-width:400px;box-shadow:0 8px 32px rgba(26,82,118,.4);display:flex;align-items:center;gap:10px;transition:top .4s cubic-bezier(.175,.885,.32,1.275)}
+.alarm-toast.show{top:14px}
+.alarm-toast-icon{font-size:2rem;flex-shrink:0}
+.alarm-toast-text{flex:1}
+.alarm-toast-text strong{display:block;font-size:.95rem;font-weight:700}
+.alarm-toast-text small{font-size:.76rem;opacity:.85}
+.alarm-actions{display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.alarm-dismiss{background:rgba(255,255,255,.25);border:none;color:#fff;border-radius:10px;padding:7px 10px;font-family:'Cairo',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer}
+.alarm-snooze{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:10px;padding:5px 10px;font-family:'Cairo',sans-serif;font-size:.7rem;cursor:pointer}
+
+/* ── STATISTICS PAGE ── */
+.stats-page-header{background:linear-gradient(135deg,var(--green),#2ecc71);padding:48px 20px 20px;color:#fff;position:sticky;top:0;z-index:100}
+.stats-page-header h1{font-size:1.4rem;font-weight:900}
+.big-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.big-stat{background:#fff;border-radius:var(--radius);padding:18px 14px;text-align:center;box-shadow:var(--shadow)}
+.big-stat .bsn{font-size:2rem;font-weight:900;line-height:1}
+.big-stat .bsl{font-size:.72rem;color:var(--muted);font-weight:600;margin-top:4px}
+.chart-card{background:#fff;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
+.chart-card h3{font-size:.9rem;font-weight:700;margin-bottom:14px;color:var(--text)}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:100px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar-fill{width:100%;border-radius:6px 6px 0 0;min-height:4px;transition:height .6s ease}
+.bar-lbl{font-size:.6rem;color:var(--muted);font-weight:600}
+.bar-val{font-size:.65rem;font-weight:700;color:var(--text)}
+.adherence-ring{display:flex;justify-content:center;margin:10px 0}
+.med-stat-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--border)}
+.med-stat-row:last-child{border-bottom:none}
+.med-stat-pic{width:40px;height:40px;border-radius:10px;object-fit:cover;flex-shrink:0;border:2px solid var(--border)}
+.med-stat-icon{width:40px;height:40px;border-radius:10px;background:var(--primary-pale);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.med-stat-info{flex:1}
+.med-stat-name{font-size:.85rem;font-weight:700}
+.med-stat-bar{height:6px;background:var(--border);border-radius:4px;margin-top:5px;overflow:hidden}
+.med-stat-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal),var(--primary-light));transition:width .8s ease}
+.med-stat-pct{font-size:.78rem;font-weight:700;color:var(--primary);flex-shrink:0}
+
+/* ── NEWBORN / VACCINE PAGE ── */
+.info-page-header{background:linear-gradient(135deg,#e91e8c,#c0392b);padding:48px 20px 16px;color:#fff;position:sticky;top:0;z-index:100}
+.info-page-header h1{font-size:1.4rem;font-weight:900}
+.info-page-header p{font-size:.75rem;opacity:.85;margin-top:3px}
+.tab-bar{display:flex;background:rgba(255,255,255,.18);border-radius:12px;padding:4px;backdrop-filter:blur(6px);margin-top:12px}
+.tab-btn{flex:1;padding:8px;border:none;background:transparent;color:rgba(255,255,255,.75);font-family:'Cairo',sans-serif;font-size:.78rem;font-weight:700;border-radius:9px;cursor:pointer;transition:all .2s}
+.tab-btn.active{background:#fff;color:#c0392b}
+.info-section{display:none}
+.info-section.active{display:block}
+.vacc-timeline{position:relative;padding-right:24px}
+.vacc-timeline::before{content:'';position:absolute;right:10px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--pink),var(--primary-light))}
+.vacc-item{position:relative;margin-bottom:16px;background:#fff;border-radius:14px;padding:14px 14px 14px 12px;box-shadow:var(--shadow)}
+.vacc-item::before{content:'';position:absolute;right:-14px;top:50%;transform:translateY(-50%);width:12px;height:12px;border-radius:50%;background:var(--pink);border:2px solid #fff;box-shadow:0 0 0 3px rgba(233,30,140,.2)}
+.vacc-age{font-size:.7rem;font-weight:700;color:var(--pink);margin-bottom:4px}
+.vacc-name{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.vacc-desc{font-size:.72rem;color:var(--muted)}
+.vacc-doses{display:flex;gap:4px;margin-top:6px}
+.vacc-dose-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.vacc-dose-dot.done{background:var(--teal)}
+.vacc-dose-dot.due{background:var(--gold)}
+.info-card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.info-card h4{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.info-card p{font-size:.78rem;color:var(--muted);line-height:1.6}
+.info-card ul{padding-right:14px;margin-top:6px}
+.info-card li{font-size:.76rem;color:var(--muted);margin-bottom:4px;line-height:1.5}
+.alert-card{background:linear-gradient(135deg,#fef9e7,#fdecea);border-radius:14px;padding:14px;margin-bottom:12px;border-right:4px solid var(--gold)}
+.alert-card h4{font-size:.85rem;font-weight:700;color:var(--gold);margin-bottom:6px}
+.alert-card p{font-size:.75rem;color:var(--text)}
+.green-card{background:var(--green-light);border-right:4px solid var(--green)}
+.green-card h4{color:var(--green)}
+
+/* ── SETTINGS PAGE ── */
+.settings-header{background:linear-gradient(135deg,#6c3483,#9b59b6);padding:48px 20px 20px;color:#fff;position:sticky;top:0;z-index:100}
+.settings-header h1{font-size:1.4rem;font-weight:900}
+.settings-section{background:#fff;border-radius:var(--radius);margin-bottom:14px;box-shadow:var(--shadow);overflow:hidden}
+.settings-section-title{font-size:.75rem;font-weight:700;color:var(--muted);padding:12px 16px 6px;text-transform:uppercase;letter-spacing:.5px}
+.settings-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.settings-row:last-child{border-bottom:none}
+.settings-row:active{background:var(--bg)}
+.settings-row-icon{font-size:1.3rem;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.settings-row-info{flex:1}
+.settings-row-title{font-size:.88rem;font-weight:700;color:var(--text)}
+.settings-row-sub{font-size:.72rem;color:var(--muted);margin-top:1px}
+.settings-row-action{font-size:.8rem;color:var(--muted)}
+.toggle{width:44px;height:24px;border-radius:12px;background:var(--border);border:none;position:relative;cursor:pointer;transition:background .3s;flex-shrink:0}
+.toggle.on{background:var(--teal)}
+.toggle::after{content:'';position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .3s;box-shadow:0 2px 4px rgba(0,0,0,.15)}
+.toggle.on::after{transform:translateX(-20px)}
+.sound-options{display:flex;gap:8px;flex-wrap:wrap;padding:14px 16px}
+.sound-opt{border:2px solid var(--border);border-radius:12px;padding:8px 14px;font-family:'Cairo',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;color:var(--text);background:#fff;transition:all .2s}
+.sound-opt.selected{border-color:var(--primary);background:var(--primary-pale);color:var(--primary)}
+
+/* ── WEEK VIEW ── */
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:16px}
+.week-day-col{text-align:center}
+.week-day-name{font-size:.6rem;font-weight:700;color:var(--muted);margin-bottom:4px}
+.week-day-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin:0 auto 3px;cursor:pointer;transition:all .2s;color:var(--text)}
+.week-day-num.today{background:var(--primary);color:#fff}
+.week-day-num.selected{background:var(--primary-pale);color:var(--primary);border:2px solid var(--primary)}
+.week-dot-row{display:flex;justify-content:center;gap:2px;flex-wrap:wrap;min-height:8px}
+.week-dot{width:5px;height:5px;border-radius:50%}
+.week-dot.taken{background:var(--teal)}.week-dot.missed{background:var(--coral)}.week-dot.upcoming{background:var(--primary-light)}
+.week-med-list{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.week-med-row{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.week-med-row:last-child{border-bottom:none}
+.week-med-pic{width:34px;height:34px;border-radius:9px;object-fit:cover;flex-shrink:0;border:2px solid var(--border)}
+.week-med-icon{font-size:1.2rem;width:34px;height:34px;background:var(--primary-pale);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.week-med-info{flex:1}
+.week-med-name{font-size:.85rem;font-weight:700}
+.week-med-detail{font-size:.68rem;color:var(--muted);margin-top:1px}
+.week-progress{display:flex;gap:3px;margin-top:4px}
+.week-prog-dot{width:9px;height:9px;border-radius:3px}
+.week-prog-dot.done{background:var(--teal)}.week-prog-dot.miss{background:var(--coral)}.week-prog-dot.pend{background:var(--border)}
+
+/* ── MISC ── */
+.empty-state{text-align:center;padding:40px 20px}
+.empty-state .e-icon{font-size:3.5rem;margin-bottom:10px}
+.empty-state p{color:var(--muted);font-size:.85rem}
+.badge{display:inline-block;font-size:.6rem;font-weight:700;border-radius:6px;padding:2px 6px}
+.badge-taken{background:var(--teal-light);color:var(--teal-dark)}
+.badge-next{background:var(--gold-light);color:var(--gold)}
+.badge-missed{background:var(--coral-light);color:var(--coral)}
+.info-box{background:var(--primary-pale);border-radius:12px;padding:11px 13px;margin-bottom:12px;font-size:.77rem;color:var(--primary);font-weight:600;display:flex;align-items:flex-start;gap:7px}
+.resched-banner{background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:#fff;border-radius:14px;padding:11px 14px;margin-bottom:12px;display:none;align-items:center;gap:8px;font-size:.78rem;font-weight:600;box-shadow:0 4px 14px rgba(108,92,231,.3)}
+.resched-banner.show{display:flex}
+.rb-close{background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:8px;padding:4px 9px;font-family:'Cairo',sans-serif;font-size:.72rem;cursor:pointer}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--primary-pale);border-radius:4px}
+.divider{height:1px;background:var(--border);margin:10px 0}
+
+/* ── ALARM SCREEN ANIMATION ── */
+@keyframes ring-pulse{0%{transform:scale(1);opacity:.6}50%{transform:scale(1.12);opacity:.15}100%{transform:scale(1);opacity:.6}}
+@keyframes alarm-shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
+/* ── SMALL TOAST (non-alarm) ── */
+.alarm-toast{position:fixed;top:-90px;left:50%;transform:translateX(-50%);z-index:600;background:rgba(26,82,118,.95);color:#fff;border-radius:14px;padding:12px 16px;width:calc(100% - 24px);max-width:400px;box-shadow:0 6px 24px rgba(0,0,0,.25);display:flex;align-items:center;gap:10px;transition:top .35s cubic-bezier(.175,.885,.32,1.275);backdrop-filter:blur(8px)}
+.alarm-toast.show{top:12px}
+.alarm-toast-icon{font-size:1.5rem;flex-shrink:0}
+.alarm-toast-text strong{display:block;font-size:.88rem;font-weight:700}
+.alarm-toast-text small{font-size:.72rem;opacity:.8}
+
+/* ── TIME PERIOD CHIPS in header ── */
+.period-chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-top:10px;scrollbar-width:none}
+.period-chips::-webkit-scrollbar{display:none}
+.period-chip{flex-shrink:0;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.35);color:#fff;border-radius:20px;padding:5px 12px;font-family:'Cairo',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
+.period-chip.active{background:#fff;color:var(--primary);border-color:#fff}
+
+/* ── HEADER SUMMARY BANDS ── */
+.hdr-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px}
+.hdr-band{background:rgba(255,255,255,.15);border-radius:10px;padding:7px 6px;text-align:center;backdrop-filter:blur(4px)}
+.hdr-band-num{font-size:1.2rem;font-weight:900;color:#fff;line-height:1}
+.hdr-band-lbl{font-size:.58rem;color:rgba(255,255,255,.8);font-weight:600;margin-top:1px}
+.hdr-band.taken .hdr-band-num{color:#55efc4}
+.hdr-band.missed .hdr-band-num{color:#ff7675}
+.hdr-band.upcoming .hdr-band-num{color:#74b9ff}
+
+/* ── SECTION TABS (تم / فائت / قادم) ── */
+.dose-section-tabs{display:flex;gap:6px;margin-bottom:12px}
+.dst{flex:1;padding:8px 4px;border:none;border-radius:10px;font-family:'Cairo',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s;position:relative}
+.dst.taken-tab{background:var(--teal-light);color:var(--teal-dark)}
+.dst.missed-tab{background:var(--coral-light);color:var(--coral)}
+.dst.upcoming-tab{background:var(--primary-pale);color:var(--primary)}
+.dst.active-tab{box-shadow:0 3px 10px rgba(0,0,0,.12);transform:translateY(-1px)}
+.dst .dst-cnt{display:inline-block;background:rgba(0,0,0,.1);border-radius:10px;padding:0 6px;margin-right:3px;font-size:.65rem}
+
+/* ── CATEGORY PILLS ── */
+.cat-picker{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.cat-opt{border:2px solid var(--border);border-radius:10px;padding:7px 10px;font-family:'Cairo',sans-serif;font-size:.76rem;font-weight:700;cursor:pointer;color:var(--text);background:#fff;transition:all .15s;display:flex;align-items:center;gap:4px}
+.cat-opt.selected{border-color:var(--primary);background:var(--primary-pale);color:var(--primary)}
+.cat-badge{display:inline-flex;align-items:center;gap:3px;font-size:.6rem;font-weight:700;border-radius:6px;padding:2px 7px;margin-top:3px}
+.cat-antibiotic{background:#fde8f4;color:#c0392b}
+.cat-spray{background:#e3f2fd;color:#1565c0}
+.cat-syrup{background:#e0f7f4;color:#00695c}
+.cat-suppository{background:#f3e5f5;color:#6a1b9a}
+.cat-inhale{background:#e8f5e9;color:#2e7d32}
+.cat-drops{background:#fff8e1;color:#e65100}
+.cat-pill{background:#fce4ec;color:#880e4f}
+.cat-injection{background:#e8eaf6;color:#283593}
+.cat-cream{background:#fafafa;color:#424242;border:1px solid var(--border)}
+
+/* ── DOSE ACTION MODAL ── */
+.time-action-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.ta-btn{padding:13px 8px;border:none;border-radius:12px;font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
+.ta-btn:active{transform:scale(.97)}
+.ta-btn.now{background:linear-gradient(135deg,var(--teal),#00cec9);color:#fff}
+.ta-btn.sched{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff}
+.ta-btn.custom{background:var(--gold-light);color:var(--gold);border:2px solid var(--gold)}
+.ta-btn.skip{background:var(--coral-light);color:var(--coral);border:2px solid var(--coral)}
+.custom-time-row{display:none;margin-top:10px;gap:8px;align-items:center}
+.custom-time-row.show{display:flex}
+
+/* ── SNOOZE OPTIONS in notification toast ── */
+.snooze-opts{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.snooze-opt-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:4px 9px;font-family:'Cairo',sans-serif;font-size:.68rem;font-weight:700;cursor:pointer}
+
+/* ── MANAGE SECTION in action modal ── */
+.manage-divider{display:flex;align-items:center;gap:8px;margin:16px 0 12px;color:var(--muted);font-size:.72rem;font-weight:700}
+.manage-divider::before,.manage-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.manage-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.mg-btn{padding:11px 6px;border-radius:12px;border:none;font-family:'Cairo',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
+.mg-btn:active{transform:scale(.96)}
+.mg-btn .mg-icon{font-size:1.3rem}
+.mg-btn.edit-dose{background:var(--primary-pale);color:var(--primary)}
+.mg-btn.edit-time{background:var(--gold-light);color:var(--gold)}
+.mg-btn.del-future{background:#fff3e0;color:#e65100}
+.mg-btn.del-med{background:var(--coral-light);color:var(--coral)}
+.mg-btn.reset-sched{background:var(--green-light);color:var(--green)}
+.mg-btn.edit-full{background:var(--purple-light);color:var(--purple)}
+
+/* ── Quick edit dose modal ── */
+.quick-edit-row{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.quick-edit-row label{font-size:.8rem;font-weight:700;color:var(--text);white-space:nowrap;min-width:80px}
+</style>
+</head>
+<body>
+
+<!-- ═══ FULLSCREEN ALARM SCREEN ═══ -->
+<div id="alarmScreen" style="display:none;position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#0d2137 0%,#1a5276 50%,#2c3e50 100%);color:#fff;font-family:'Cairo','Tajawal',sans-serif;direction:rtl;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 24px">
+
+  <!-- Animated ring -->
+  <div id="alarmRingWrap" style="position:relative;width:160px;height:160px;margin-bottom:28px">
+    <div id="alarmRing1" style="position:absolute;inset:-14px;border-radius:50%;border:3px solid rgba(255,255,255,.15);animation:ring-pulse 1.8s ease-in-out infinite"></div>
+    <div id="alarmRing2" style="position:absolute;inset:-28px;border-radius:50%;border:2px solid rgba(255,255,255,.07);animation:ring-pulse 1.8s ease-in-out infinite .4s"></div>
+    <div id="alarmIconCircle" style="width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:3px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:4.5rem;overflow:hidden">
+      <span id="alarmIcon">💊</span>
+    </div>
+  </div>
+
+  <!-- Time -->
+  <div id="alarmClockDisplay" style="font-size:3.2rem;font-weight:900;letter-spacing:2px;margin-bottom:4px;line-height:1"></div>
+  <div id="alarmPeriodDisplay" style="font-size:1rem;opacity:.7;margin-bottom:20px;font-weight:700"></div>
+
+  <!-- Med info -->
+  <div style="background:rgba(255,255,255,.1);border-radius:20px;padding:16px 24px;margin-bottom:28px;backdrop-filter:blur(6px);max-width:320px;width:100%">
+    <div id="alarmName" style="font-size:1.35rem;font-weight:900;margin-bottom:6px">الدواء</div>
+    <div id="alarmDetail" style="font-size:.88rem;opacity:.85">حان وقت الجرعة!</div>
+  </div>
+
+  <!-- Main action -->
+  <button onclick="dismissAlarm()" style="width:100%;max-width:320px;background:#27ae60;border:none;color:#fff;border-radius:18px;padding:18px;font-family:'Cairo',sans-serif;font-size:1.1rem;font-weight:900;cursor:pointer;margin-bottom:14px;box-shadow:0 8px 24px rgba(39,174,96,.4);letter-spacing:.5px">
+    ✅ أخذت الدواء
+  </button>
+
+  <!-- Snooze buttons -->
+  <div style="font-size:.75rem;opacity:.7;margin-bottom:10px;font-weight:700">⏰ تأجيل لـ</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:320px;margin-bottom:20px">
+    <button onclick="snoozeAlarm(5)"  style="background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);color:#fff;border-radius:14px;padding:12px 4px;font-family:'Cairo',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer">5<br><small>دقيقة</small></button>
+    <button onclick="snoozeAlarm(10)" style="background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);color:#fff;border-radius:14px;padding:12px 4px;font-family:'Cairo',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer">10<br><small>دقيقة</small></button>
+    <button onclick="snoozeAlarm(15)" style="background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);color:#fff;border-radius:14px;padding:12px 4px;font-family:'Cairo',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer">15<br><small>دقيقة</small></button>
+    <button onclick="snoozeAlarm(30)" style="background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);color:#fff;border-radius:14px;padding:12px 4px;font-family:'Cairo',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer">30<br><small>دقيقة</small></button>
+  </div>
+
+  <!-- Skip -->
+  <button onclick="skipAlarmDose()" style="background:transparent;border:none;color:rgba(255,255,255,.5);font-family:'Cairo',sans-serif;font-size:.78rem;cursor:pointer;padding:8px">تخطي هذه الجرعة</button>
+</div>
+
+<!-- Tiny toast for non-alarm notifications -->
+<div class="alarm-toast" id="alarmToast">
+  <div class="alarm-toast-icon" id="toastIcon">✅</div>
+  <div class="alarm-toast-text" style="flex:1">
+    <strong id="toastName">رسالة</strong>
+    <small id="toastDetail"></small>
+  </div>
+</div>
+
+<!-- ═══ PAGE: HOME ═══ -->
+<div class="page active" id="pageHome">
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <h1 id="headerGreeting">مُذكِّر الدواء 💊</h1>
+        <div class="header-sub" id="headerTime"></div>
+      </div>
+      <div class="header-actions">
+        <button class="hdr-btn" onclick="openAddModal()" title="إضافة دواء">＋</button>
+        <button class="hdr-btn" onclick="navigateTo('pageProfile')" title="الملف الشخصي">👤</button>
+      </div>
+    </div>
+    <!-- Summary bands: تم / فائت / قادم -->
+    <div class="hdr-summary">
+      <div class="hdr-band taken"><div class="hdr-band-num" id="hdrTaken">0</div><div class="hdr-band-lbl">✅ تم أخذها</div></div>
+      <div class="hdr-band missed"><div class="hdr-band-num" id="hdrMissed">0</div><div class="hdr-band-lbl">❌ فائتة</div></div>
+      <div class="hdr-band upcoming"><div class="hdr-band-num" id="hdrUpcoming">0</div><div class="hdr-band-lbl">⏰ قادمة</div></div>
+    </div>
+    <div class="view-toggle" style="margin-top:10px">
+      <button class="view-btn active" id="btnDay" onclick="switchView('day')">📅 يوميّ</button>
+      <button class="view-btn" id="btnWeek" onclick="switchView('week')">📆 أسبوعيّ</button>
+    </div>
+  </div>
+  <div class="content">
+    <!-- DAY VIEW -->
+    <div id="dayView">
+      <div class="day-nav">
+        <button onclick="changeDay(-1)">‹</button>
+        <div class="day-label"><span id="dayTitle"></span><small id="dayDate"></small></div>
+        <button onclick="changeDay(1)">›</button>
+      </div>
+      <div class="resched-banner" id="reschedBanner">
+        <div>🔄</div>
+        <div id="reschedText" style="flex:1"></div>
+        <button class="rb-close" onclick="document.getElementById('reschedBanner').classList.remove('show')">×</button>
+      </div>
+      <!-- Section filter tabs -->
+      <div class="dose-section-tabs" id="doseSectionTabs">
+        <button class="dst taken-tab active-tab" id="tabTaken"   onclick="filterSection('taken')"  >✅ <span class="dst-cnt" id="cntTaken">0</span> تم</button>
+        <button class="dst missed-tab"           id="tabMissed"  onclick="filterSection('missed')" >❌ <span class="dst-cnt" id="cntMissed">0</span> فائتة</button>
+        <button class="dst upcoming-tab"         id="tabUpcoming" onclick="filterSection('upcoming')">⏰ <span class="dst-cnt" id="cntUpcoming">0</span> قادمة</button>
+        <button class="dst" style="background:var(--bg);color:var(--muted);border:1.5px solid var(--border)" id="tabAll" onclick="filterSection('all')">📋 الكل</button>
+      </div>
+      <div id="doseList"></div>
+    </div>
+    <!-- WEEK VIEW -->
+    <div id="weekView" style="display:none">
+      <div class="week-grid" id="weekGrid"></div>
+      <div class="sec-title"><span></span> قائمة الأدوية</div>
+      <div class="week-med-list" id="weekMedList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: PROFILE ═══ -->
+<div class="page" id="pageProfile">
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <h1>الملف الشخصي 👤</h1>
+        <div class="header-sub">معلومات الطفل والمشاركة</div>
+      </div>
+      <button class="hdr-btn" onclick="openProfileModal()">✏️</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="profile-hero" id="profileHero">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" id="profileAvatarDisplay" onclick="triggerAvatarUpload()">
+          <span id="profileAvatarEmoji">👶</span>
+        </div>
+        <div>
+          <div class="profile-name" id="profileNameDisplay">اسم الطفل</div>
+          <div class="profile-detail" id="profileAgeDisplay">أضف معلومات الطفل</div>
+        </div>
+      </div>
+      <div class="profile-chips" id="profileChips"></div>
+      <button class="profile-share-btn" onclick="shareProfile()">
+        <span>📤</span> مشاركة الملف الشخصي
+      </button>
+    </div>
+    <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatarChange(event)">
+
+    <div class="sec-title"><span></span> ملخص العلاج</div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="profileTotalMeds">0</div><div class="stat-lbl">الأدوية</div></div>
+      <div class="stat-card"><div class="stat-num" id="profileAdherence" style="color:var(--teal)">0%</div><div class="stat-lbl">الالتزام</div></div>
+      <div class="stat-card"><div class="stat-num" id="profileStreak" style="color:var(--gold)">0</div><div class="stat-lbl">أيام متتالية</div></div>
+    </div>
+
+    <div class="sec-title"><span></span> الأدوية الحالية</div>
+    <div id="profileMedsList"></div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: STATISTICS ═══ -->
+<div class="page" id="pageStats">
+  <div class="stats-page-header">
+    <h1>📊 الإحصائيات</h1>
+    <div style="font-size:.75rem;opacity:.85;margin-top:3px">تحليل الالتزام بالدواء</div>
+  </div>
+  <div class="content" style="padding-top:16px">
+    <div class="big-stat-grid" id="bigStatGrid"></div>
+    <div class="chart-card">
+      <h3>📅 الجرعات - آخر 7 أيام</h3>
+      <div class="bar-chart" id="weekBarChart"></div>
+    </div>
+    <div class="chart-card">
+      <h3>💊 الالتزام لكل دواء</h3>
+      <div id="medAdherenceList"></div>
+    </div>
+    <div class="chart-card">
+      <h3>⏰ أفضل وقت لأخذ الدواء</h3>
+      <div id="bestTimeStats" style="font-size:.82rem;color:var(--muted)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: NEWBORN INFO ═══ -->
+<div class="page" id="pageNewborn">
+  <div class="info-page-header">
+    <h1>👶 معلومات حديثي الولادة</h1>
+    <p>التطعيمات وفق وزارة الصحة المصرية + نصائح طبية</p>
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchInfoTab('vaccines', this)">💉 التطعيمات</button>
+      <button class="tab-btn" onclick="switchInfoTab('medicines', this)">💊 أدوية آمنة</button>
+      <button class="tab-btn" onclick="switchInfoTab('tips', this)">📋 نصائح</button>
+    </div>
+  </div>
+  <div class="content" style="padding-top:16px">
+
+    <!-- VACCINES TAB -->
+    <div class="info-section active" id="tabVaccines">
+      <div class="info-box">
+        <span>🏛️</span>
+        <span>جدول التطعيمات الوطني المصري - وزارة الصحة والسكان 2024</span>
+      </div>
+      <div class="vacc-timeline" id="vaccineTimeline"></div>
+    </div>
+
+    <!-- MEDICINES TAB -->
+    <div class="info-section" id="tabMedicines">
+      <div class="alert-card">
+        <h4>⚠️ تنبيه مهم</h4>
+        <p>لا تعطِ أي دواء للرضيع إلا بوصفة طبيب متخصص. هذه معلومات إرشادية فقط.</p>
+      </div>
+      <div id="newbornMedsList"></div>
+    </div>
+
+    <!-- TIPS TAB -->
+    <div class="info-section" id="tabTips">
+      <div id="newbornTipsList"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ PAGE: SETTINGS ═══ -->
+<div class="page" id="pageSettings">
+  <div class="settings-header">
+    <h1>⚙️ الإعدادات</h1>
+    <div style="font-size:.75rem;opacity:.8;margin-top:2px">تخصيص التطبيق</div>
+  </div>
+  <div class="content" style="padding-top:16px">
+
+    <div class="settings-section">
+      <div class="settings-section-title">🔔 الإشعارات والتنبيهات</div>
+      <div class="settings-row" onclick="toggleSetting('notifEnabled')">
+        <div class="settings-row-icon" style="background:#fff3e0">🔔</div>
+        <div class="settings-row-info">
+          <div class="settings-row-title">تفعيل الإشعارات</div>
+          <div class="settings-row-sub">إشعارات مواعيد الدواء</div>
+        </div>
+        <button class="toggle on" id="toggleNotif" onclick="event.stopPropagation();toggleSetting('notifEnabled')"></button>
+      </div>
+      <div class="settings-row" onclick="toggleSetting('vibrationEnabled')">
+        <div class="settings-row-icon" style="background:#e8f5e9">📳</div>
+        <div class="settings-row-info">
+          <div class="settings-row-title">الاهتزاز</div>
+          <div class="settings-row-sub">اهتزاز عند التنبيه</div>
+        </div>
+        <button class="toggle on" id="toggleVibration" onclick="event.stopPropagation();toggleSetting('vibrationEnabled')"></button>
+      </div>
+      <div class="settings-row" onclick="toggleSetting('snoozeEnabled')">
+        <div class="settings-row-icon" style="background:#e3f2fd">⏰</div>
+        <div class="settings-row-info">
+          <div class="settings-row-title">تأجيل التنبيه (Snooze)</div>
+          <div class="settings-row-sub">السماح بتأجيل 10 دقائق</div>
+        </div>
+        <button class="toggle on" id="toggleSnooze" onclick="event.stopPropagation();toggleSetting('snoozeEnabled')"></button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">🎵 صوت التنبيه</div>
+      <div class="sound-options" id="soundOptions">
+        <button class="sound-opt selected" data-sound="beep" onclick="selectSound(this)">🔔 تنبيه</button>
+        <button class="sound-opt" data-sound="bell" onclick="selectSound(this)">🎵 جرس</button>
+        <button class="sound-opt" data-sound="chime" onclick="selectSound(this)">✨ نغمة</button>
+        <button class="sound-opt" data-sound="urgent" onclick="selectSound(this)">🚨 عاجل</button>
+        <button class="sound-opt" data-sound="soft" onclick="selectSound(this)">🎶 هادئ</button>
+        <button class="sound-opt" data-sound="none" onclick="selectSound(this)">🔇 صامت</button>
+      </div>
+      <div style="padding:0 16px 14px">
+        <button onclick="previewSound()" style="background:var(--primary-pale);border:none;color:var(--primary);border-radius:10px;padding:8px 16px;font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer">▶️ معاينة الصوت</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">👤 الملف الشخصي</div>
+      <div class="settings-row" onclick="openProfileModal()">
+        <div class="settings-row-icon" style="background:#f3e5f5">✏️</div>
+        <div class="settings-row-info">
+          <div class="settings-row-title">تعديل معلومات الطفل</div>
+          <div class="settings-row-sub">الاسم، تاريخ الميلاد، الطبيب</div>
+        </div>
+        <div class="settings-row-action">›</div>
+      </div>
+      <div class="settings-row" onclick="shareProfile()">
+        <div class="settings-row-icon" style="background:#e0f7f4">📤</div>
+        <div class="settings-row-info">
+          <div class="settings-row-title">مشاركة الملف الشخصي</div>
+          <div class="settings-row-sub">إرسال قائمة الأدوية للطبيب</div>
+        </div>
+        <div class="settings-row-action">›</div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">📦 البيانات</div>
+      <div class="settings-row" onclick="exportData()">
+        <div class="settings-row-icon" style="background:#e8f5e9">📤</div>
+        <div class="settings-row-info">
+          <div class="settings-row-title">تصدير البيانات</div>
+          <div class="settings-row-sub">حفظ نسخة احتياطية JSON</div>
+        </div>
+        <div class="settings-row-action">›</div>
+      </div>
+      <div class="settings-row" onclick="triggerImport()">
+        <div class="settings-row-icon" style="background:#e3f2fd">📥</div>
+        <div class="settings-row-info">
+          <div class="settings-row-title">استيراد البيانات</div>
+          <div class="settings-row-sub">استعادة نسخة احتياطية</div>
+        </div>
+        <div class="settings-row-action">›</div>
+      </div>
+      <div class="settings-row" onclick="confirmClearAll()">
+        <div class="settings-row-icon" style="background:#fdecea">🗑️</div>
+        <div class="settings-row-info">
+          <div class="settings-row-title">مسح جميع البيانات</div>
+          <div class="settings-row-sub">حذف كل الأدوية والسجلات</div>
+        </div>
+        <div class="settings-row-action" style="color:var(--coral)">›</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:16px;color:var(--muted);font-size:.72rem">
+      مُذكِّر الدواء v2.0 · متوافق مع iOS & Android
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BOTTOM NAV ═══ -->
+<nav class="bottom-nav">
+  <div class="nav-item active" id="navHome" onclick="navigateTo('pageHome')">
+    <div class="nav-icon">🏠</div>
+    <div class="nav-lbl">الرئيسية</div>
+  </div>
+  <div class="nav-item" id="navProfile" onclick="navigateTo('pageProfile')">
+    <div class="nav-icon">👤</div>
+    <div class="nav-lbl">الملف</div>
+  </div>
+  <div class="nav-item" id="navStats" onclick="navigateTo('pageStats')">
+    <div class="nav-icon">📊</div>
+    <div class="nav-lbl">إحصائيات</div>
+  </div>
+  <div class="nav-item" id="navNewborn" onclick="navigateTo('pageNewborn')">
+    <div class="nav-icon">👶</div>
+    <div class="nav-lbl">حديثي الولادة</div>
+  </div>
+  <div class="nav-item" id="navSettings" onclick="navigateTo('pageSettings')">
+    <div class="nav-icon">⚙️</div>
+    <div class="nav-lbl">إعدادات</div>
+  </div>
+</nav>
+
+<!-- ═══ ADD/EDIT MEDICINE MODAL ═══ -->
+<div class="modal-overlay" id="addModal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 id="modalTitle">➕ إضافة دواء جديد</h2>
+    <div class="info-box"><span>💡</span><span>أضف صورة الدواء لسهولة التعرف عليه</span></div>
+
+    <div class="form-group">
+      <label class="form-label">صورة الدواء</label>
+      <div class="photo-upload-area" id="photoUploadArea" onclick="triggerMedPhotoUpload()">
+        <div id="photoPreview">
+          <div style="font-size:2rem;margin-bottom:4px">📷</div>
+          <div class="ph-hint">انقر لإضافة صورة الدواء</div>
+        </div>
+      </div>
+      <input type="file" id="medPhotoInput" accept="image/*" style="display:none" onchange="handleMedPhoto(event)">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">اسم الدواء</label>
+      <input class="form-input" id="medName" placeholder="مثال: باراسيتامول 125">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">تصنيف الدواء</label>
+      <div class="cat-picker" id="catPicker">
+        <button class="cat-opt selected" data-cat="syrup"       data-icon="🧪" onclick="selectCat(this)">🧪 شراب</button>
+        <button class="cat-opt"          data-cat="pill"        data-icon="💊" onclick="selectCat(this)">💊 حبوب</button>
+        <button class="cat-opt"          data-cat="antibiotic"  data-icon="🦠" onclick="selectCat(this)">🦠 مضاد حيوي</button>
+        <button class="cat-opt"          data-cat="spray"       data-icon="💨" onclick="selectCat(this)">💨 بخاخ</button>
+        <button class="cat-opt"          data-cat="suppository" data-icon="🟣" onclick="selectCat(this)">🟣 لبوس</button>
+        <button class="cat-opt"          data-cat="inhale"      data-icon="🌬️" onclick="selectCat(this)">🌬️ استنشاق</button>
+        <button class="cat-opt"          data-cat="drops"       data-icon="💧" onclick="selectCat(this)">💧 قطرة</button>
+        <button class="cat-opt"          data-cat="injection"   data-icon="💉" onclick="selectCat(this)">💉 حقنة</button>
+        <button class="cat-opt"          data-cat="cream"       data-icon="🧴" onclick="selectCat(this)">🧴 كريم/مرهم</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">رمز الدواء</label>
+      <div class="icon-picker" id="iconPicker">
+        <div class="icon-opt selected" data-icon="💊" onclick="selectIcon(this)">💊</div>
+        <div class="icon-opt" data-icon="💉" onclick="selectIcon(this)">💉</div>
+        <div class="icon-opt" data-icon="🧴" onclick="selectIcon(this)">🧴</div>
+        <div class="icon-opt" data-icon="💧" onclick="selectIcon(this)">💧</div>
+        <div class="icon-opt" data-icon="🌡️" onclick="selectIcon(this)">🌡️</div>
+        <div class="icon-opt" data-icon="🩺" onclick="selectIcon(this)">🩺</div>
+        <div class="icon-opt" data-icon="🌿" onclick="selectIcon(this)">🌿</div>
+        <div class="icon-opt" data-icon="🫀" onclick="selectIcon(this)">🫀</div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">الجرعة (حبوب/مل/قطر)</label>
+        <input class="form-input" id="medDoseAmt" placeholder="مثال: 2.5" type="number" min="0" step="0.5">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الوحدة</label>
+        <select class="form-input" id="medDoseUnit">
+          <option value="مل">مل (ml)</option>
+          <option value="حبة">حبة</option>
+          <option value="قطرة">قطرة</option>
+          <option value="كبسول">كبسول</option>
+          <option value="ملعقة">ملعقة</option>
+          <option value="مغ">ملجم (mg)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">كل كم ساعة؟</label>
+        <select class="form-input" id="medInterval">
+          <option value="1">كل ساعة</option>
+          <option value="2">كل ساعتين</option>
+          <option value="3">كل 3 ساعات</option>
+          <option value="4">كل 4 ساعات</option>
+          <option value="6" selected>كل 6 ساعات</option>
+          <option value="8">كل 8 ساعات</option>
+          <option value="12">كل 12 ساعة</option>
+          <option value="24">مرة يومياً</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">وقت أول جرعة</label>
+        <input class="form-input" type="time" id="medStartTime" value="08:00">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">تاريخ البدء</label>
+        <input class="form-input" type="date" id="medStartDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">مدة العلاج</label>
+        <select class="form-input" id="medDuration">
+          <option value="1">يوم واحد</option>
+          <option value="3">3 أيام</option>
+          <option value="5">5 أيام</option>
+          <option value="7" selected>أسبوع</option>
+          <option value="10">10 أيام</option>
+          <option value="14">أسبوعان</option>
+          <option value="30">شهر</option>
+          <option value="90">3 أشهر</option>
+          <option value="999">مستمر</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">ملاحظات (اختياري)</label>
+      <input class="form-input" id="medNotes" placeholder="مثال: بعد الأكل مباشرة">
+    </div>
+
+    <button class="submit-btn" onclick="saveMedicine()">💾 حفظ الدواء</button>
+    <div style="text-align:center">
+      <button class="delete-btn" id="deleteBtn" style="display:none" onclick="deleteMedicine()">🗑️ حذف الدواء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DOSE DETAIL MODAL ═══ -->
+<div class="modal-overlay" id="doseModal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 id="doseModalTitle">تفاصيل الجرعة</h2>
+    <div id="doseModalContent"></div>
+  </div>
+</div>
+
+<!-- ═══ DOSE TIME ACTION MODAL ═══ -->
+<div class="modal-overlay" id="doseActionModal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 id="actionModalTitle">⏱️ تسجيل الجرعة</h2>
+    <div id="actionModalBody">
+
+      <!-- معلومات الجرعة -->
+      <div style="background:var(--bg);border-radius:12px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
+        <div id="actionMedPic" style="font-size:1.8rem;flex-shrink:0"></div>
+        <div style="flex:1">
+          <div style="font-size:.8rem;color:var(--muted)" id="actionModalDesc"></div>
+        </div>
+      </div>
+
+      <!-- ─── تسجيل أخذ الجرعة ─── -->
+      <div style="font-size:.75rem;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">تسجيل الجرعة</div>
+      <div class="time-action-btns">
+        <button class="ta-btn now" onclick="doTakeNow()">✅ أخذتها الآن<br><small id="nowTimeLabel" style="opacity:.85;font-size:.68rem"></small></button>
+        <button class="ta-btn sched" onclick="doTakeOnSchedule()">📅 بالميعاد<br><small id="schedTimeLabel" style="opacity:.85;font-size:.68rem"></small></button>
+        <button class="ta-btn custom" onclick="showCustomTime()">🕐 وقت آخر</button>
+        <button class="ta-btn skip" onclick="doSkipDose()">⏭️ تخطي</button>
+      </div>
+      <div class="custom-time-row" id="customTimeRow">
+        <input type="time" class="form-input" id="customTimeInput" style="flex:1">
+        <button class="submit-btn" style="width:auto;padding:11px 16px;margin-top:0" onclick="doTakeCustom()">تأكيد</button>
+      </div>
+
+      <!-- ─── إدارة الدواء ─── -->
+      <div class="manage-divider" style="margin-top:18px">⚙️ إدارة الدواء</div>
+      <div class="manage-btns">
+        <button class="mg-btn edit-dose" onclick="openQuickEditDose()">
+          <span class="mg-icon">💊</span>تعديل الجرعة
+        </button>
+        <button class="mg-btn edit-time" onclick="openQuickEditTime()">
+          <span class="mg-icon">⏰</span>تعديل التوقيت
+        </button>
+        <button class="mg-btn reset-sched" onclick="doResetSchedule()">
+          <span class="mg-icon">🔄</span>إعادة ضبط الجدول
+        </button>
+        <button class="mg-btn del-future" onclick="doDeleteFuture()">
+          <span class="mg-icon">🗓️</span>حذف الجرعات القادمة
+        </button>
+        <button class="mg-btn edit-full" onclick="doOpenFullEdit()">
+          <span class="mg-icon">✏️</span>تعديل كامل
+        </button>
+        <button class="mg-btn del-med" onclick="doDeleteMedicine()">
+          <span class="mg-icon">🗑️</span>حذف الدواء نهائياً
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ QUICK EDIT DOSE MODAL ═══ -->
+<div class="modal-overlay" id="quickDoseModal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 id="quickDoseTitle">💊 تعديل الجرعة</h2>
+    <div style="font-size:.8rem;color:var(--muted);margin-bottom:16px" id="quickDoseDesc"></div>
+
+    <div class="quick-edit-row">
+      <label>الكمية</label>
+      <input type="number" class="form-input" id="qDoseAmt" min="0" step="0.5" style="flex:1">
+      <select class="form-input" id="qDoseUnit" style="flex:1;margin-right:6px">
+        <option value="مل">مل</option>
+        <option value="حبة">حبة</option>
+        <option value="قطرة">قطرة</option>
+        <option value="كبسول">كبسول</option>
+        <option value="ملعقة">ملعقة</option>
+        <option value="مغ">ملجم</option>
+      </select>
+    </div>
+    <div class="quick-edit-row">
+      <label>التكرار</label>
+      <select class="form-input" id="qInterval" style="flex:1">
+        <option value="1">كل ساعة</option>
+        <option value="2">كل 2 ساعة</option>
+        <option value="3">كل 3 ساعات</option>
+        <option value="4">كل 4 ساعات</option>
+        <option value="6">كل 6 ساعات</option>
+        <option value="8">كل 8 ساعات</option>
+        <option value="12">كل 12 ساعة</option>
+        <option value="24">مرة يومياً</option>
+      </select>
+    </div>
+    <div class="quick-edit-row">
+      <label>ملاحظات</label>
+      <input type="text" class="form-input" id="qNotes" placeholder="مثال: بعد الأكل" style="flex:1">
+    </div>
+    <button class="submit-btn" onclick="saveQuickEditDose()">💾 حفظ التعديلات</button>
+  </div>
+</div>
+
+<!-- ═══ QUICK EDIT TIME MODAL ═══ -->
+<div class="modal-overlay" id="quickTimeModal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 id="quickTimeTitle">⏰ تعديل التوقيت</h2>
+    <div style="font-size:.8rem;color:var(--muted);margin-bottom:16px" id="quickTimeDesc"></div>
+
+    <div class="quick-edit-row">
+      <label>وقت أول جرعة</label>
+      <input type="time" class="form-input" id="qStartTime" style="flex:1">
+    </div>
+
+    <div style="background:var(--primary-pale);border-radius:12px;padding:12px;margin:12px 0;font-size:.78rem;color:var(--primary)">
+      <strong>📌 ملاحظة:</strong> تعديل التوقيت سيُعيد ضبط جدول جميع الجرعات القادمة من الآن.
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <button class="ta-btn custom" style="padding:10px" onclick="setTimeNow()">🕐 ابدأ من الآن</button>
+      <button class="ta-btn sched" style="padding:10px" onclick="setTimeOriginal()">📅 الوقت الأصلي</button>
+    </div>
+
+    <button class="submit-btn" onclick="saveQuickEditTime()">💾 تطبيق التوقيت الجديد</button>
+  </div>
+</div>
+
+<!-- ═══ PROFILE EDIT MODAL ═══ -->
+<div class="modal-overlay" id="profileModal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>✏️ تعديل الملف الشخصي</h2>
+    <div class="form-group">
+      <label class="form-label">اسم الطفل</label>
+      <input class="form-input" id="pName" placeholder="مثال: أحمد محمد">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">تاريخ الميلاد</label>
+        <input class="form-input" type="date" id="pDob">
+      </div>
+      <div class="form-group">
+        <label class="form-label">الجنس</label>
+        <select class="form-input" id="pGender">
+          <option value="ذكر">ذكر 👦</option>
+          <option value="أنثى">أنثى 👧</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">الوزن (كجم)</label>
+        <input class="form-input" type="number" id="pWeight" placeholder="مثال: 3.5" step="0.1">
+      </div>
+      <div class="form-group">
+        <label class="form-label">فصيلة الدم</label>
+        <select class="form-input" id="pBloodType">
+          <option value="">غير معروف</option>
+          <option value="A+">A+</option><option value="A-">A-</option>
+          <option value="B+">B+</option><option value="B-">B-</option>
+          <option value="AB+">AB+</option><option value="AB-">AB-</option>
+          <option value="O+">O+</option><option value="O-">O-</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">اسم الطبيب المعالج</label>
+      <input class="form-input" id="pDoctor" placeholder="د. أحمد...">
+    </div>
+    <div class="form-group">
+      <label class="form-label">المستشفى / العيادة</label>
+      <input class="form-input" id="pHospital" placeholder="مستشفى...">
+    </div>
+    <div class="form-group">
+      <label class="form-label">الحساسية (إن وجدت)</label>
+      <input class="form-input" id="pAllergies" placeholder="مثال: البنسلين">
+    </div>
+    <button class="submit-btn" onclick="saveProfile()">💾 حفظ الملف</button>
+  </div>
+</div>
+
+<!-- ═══ PWA INSTALL BANNER ═══ -->
+<div id="installBanner" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border-radius:16px;padding:14px 18px;width:calc(100% - 32px);max-width:400px;box-shadow:0 8px 24px rgba(26,82,118,0.4);z-index:300;align-items:center;gap:12px;font-family:'Cairo',sans-serif;direction:rtl;">
+  <span style="font-size:1.5rem">📲</span>
+  <div style="flex:1"><strong style="display:block;font-size:.9rem">ثبّت التطبيق</strong><small style="opacity:.85;font-size:.75rem">يعمل بدون إنترنت</small></div>
+  <button onclick="installApp()" style="background:white;color:var(--primary);border:none;border-radius:10px;padding:8px 12px;font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer">تثبيت</button>
+  <button onclick="this.parentElement.style.display='none'" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:8px;padding:6px 9px;cursor:pointer;font-size:.85rem">×</button>
+</div>
+
+<!-- hidden import input -->
+<input type="file" id="importFileInput" accept=".json" style="display:none" onchange="handleImport(event)">
+
+<script>
+// ══════════════════════════════════════════
+//  STATE & STORAGE
+// ══════════════════════════════════════════
+let medicines     = JSON.parse(localStorage.getItem('meds_v4') || '[]');
+let takenLog      = JSON.parse(localStorage.getItem('taken_v4') || '{}');
+let reschedOffsets= JSON.parse(localStorage.getItem('resched_v4') || '{}');
+let profile       = JSON.parse(localStorage.getItem('profile_v4') || '{}');
+let settings      = JSON.parse(localStorage.getItem('settings_v4') || JSON.stringify({
+  notifEnabled: true, vibrationEnabled: true, snoozeEnabled: true,
+  alarmSound: 'beep'
+}));
+
+let currentView      = 'day';
+let currentDayOffset = 0;
+let editingMedId     = null;
+let selectedIcon     = '💊';
+let selectedCat      = 'syrup';
+let currentMedPhoto  = null;
+let alarmQueue       = [];
+let alarmActive      = false;
+let audioCtx         = null;
+let activeDoseFilter = 'all';   // 'taken'|'missed'|'upcoming'|'all'
+
+// pending action for dose time modal
+let _pendingAction   = null; // {medId, dk, time, h, m}
+
+const save = () => {
+  localStorage.setItem('meds_v4', JSON.stringify(medicines));
+  localStorage.setItem('taken_v4', JSON.stringify(takenLog));
+  localStorage.setItem('resched_v4', JSON.stringify(reschedOffsets));
+  localStorage.setItem('profile_v4', JSON.stringify(profile));
+  localStorage.setItem('settings_v4', JSON.stringify(settings));
+};
+
+// ══════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════
+const uid  = () => Date.now().toString(36)+Math.random().toString(36).slice(2);
+const pad  = n => String(n).padStart(2,'0');
+const fmtT = (h,m) => `${pad(h)}:${pad(m)}`; // internal 24h storage
+
+// Display helper: converts "22:08" → "10:08\nم" or "08:30" → "8:30\nص"
+function fmt12(timeStr24, html){
+  if(!timeStr24) return '';
+  const [h,m] = timeStr24.split(':').map(Number);
+  const isAM  = h < 12;
+  const period = isAM ? 'ص' : 'م';
+  const h12    = h % 12 === 0 ? 12 : h % 12;
+  const numPart = h12 + ':' + pad(m);
+  if(html === false) return numPart + ' ' + period;
+  // HTML version: period on its own small line with color
+  const color = isAM ? '#f39c12' : '#8e44ad';
+  return `<span class="t12-num">${numPart}</span><span class="t12-per" style="color:${color}">${period}</span>`;
+}
+const dayKey = d => { const x=new Date(d); return `${x.getFullYear()}-${pad(x.getMonth()+1)}-${pad(x.getDate())}`; };
+const arabicDay   = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const arabicMonth = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+const fmtDate = d => `${d.getDate()} ${arabicMonth[d.getMonth()]} ${d.getFullYear()}`;
+const getDisplayDate = () => { const d=new Date(); d.setDate(d.getDate()+currentDayOffset); return d; };
+
+function calcAge(dob) {
+  if (!dob) return '';
+  const b = new Date(dob), n = new Date();
+  const totalDays = Math.floor((n - b) / (1000*60*60*24));
+  if (totalDays < 0) return 'تاريخ غير صحيح';
+
+  const years  = n.getFullYear() - b.getFullYear();
+  let months   = n.getMonth() - b.getMonth();
+  let days     = n.getDate()  - b.getDate();
+  if (days < 0) { months--; days += new Date(n.getFullYear(), n.getMonth(), 0).getDate(); }
+  let realYears = years; if (months < 0) { realYears--; months += 12; }
+
+  if (totalDays === 0) return 'اليوم الأول 🎉';
+  if (totalDays < 7)   return `${totalDays} أيام`;
+  if (totalDays < 30)  return `${Math.floor(totalDays/7)} أسابيع و${totalDays%7} أيام`;
+  if (realYears === 0 && months < 12) {
+    return days > 0 ? `${months} شهر و${days} يوم` : `${months} شهر`;
+  }
+  if (realYears < 3) {
+    const totalMonths = realYears*12 + months;
+    return days > 0 ? `${totalMonths} شهر و${days} يوم` : `${totalMonths} شهر`;
+  }
+  return months > 0 ? `${realYears} سنة و${months} شهر` : `${realYears} سنة`;
+}
+
+function calcAgeDetails(dob) {
+  if (!dob) return null;
+  const b = new Date(dob), n = new Date();
+  const totalDays   = Math.floor((n - b) / (1000*60*60*24));
+  const totalWeeks  = Math.floor(totalDays / 7);
+  const years  = n.getFullYear() - b.getFullYear();
+  let months   = n.getMonth() - b.getMonth();
+  let days     = n.getDate()  - b.getDate();
+  if (days < 0) { months--; days += new Date(n.getFullYear(), n.getMonth(), 0).getDate(); }
+  let realYears = years; if (months < 0) { realYears--; months += 12; }
+  const totalMonths = realYears * 12 + months;
+
+  // Developmental milestones
+  const milestones = [
+    {at:0,   label:'الولادة 🎉'},
+    {at:14,  label:'ابتسامة اجتماعية 😊'},
+    {at:30,  label:'شهر كامل 🌙'},
+    {at:60,  label:'يتتبع الأشياء بعينيه 👀'},
+    {at:90,  label:'يرفع رأسه 💪'},
+    {at:120, label:'يضحك بصوت عالٍ 😄'},
+    {at:180, label:'يجلس بمساعدة 🧸'},
+    {at:270, label:'يحبو 🐣'},
+    {at:365, label:'السنة الأولى 🎂'},
+  ];
+  const nextMilestone = milestones.find(m => m.at > totalDays);
+  const lastMilestone = [...milestones].reverse().find(m => m.at <= totalDays);
+
+  return { totalDays, totalWeeks, totalMonths, realYears, months, days, nextMilestone, lastMilestone };
+}
+
+// ── CLOCK ──────────────────────────────────
+const updateClock = () => {
+  const n=new Date();
+  const timeStr = `${arabicDay[n.getDay()]}، ${fmtDate(n)} — ${fmt12(fmtT(n.getHours(),n.getMinutes()),false)}`;
+  const el = document.getElementById('headerTime');
+  if(el) el.textContent = timeStr;
+  const g = document.getElementById('headerGreeting');
+  if(g) g.textContent = profile.name ? `مُذكِّر ${profile.name} 💊` : 'مُذكِّر الدواء 💊';
+};
+setInterval(updateClock,1000); updateClock();
+
+// ══════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════
+const pageNavMap = {
+  'pageHome':'navHome','pageProfile':'navProfile',
+  'pageStats':'navStats','pageNewborn':'navNewborn','pageSettings':'navSettings'
+};
+
+function navigateTo(pageId) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  const navId = pageNavMap[pageId];
+  if(navId) document.getElementById(navId).classList.add('active');
+  if(pageId==='pageStats') renderStats();
+  if(pageId==='pageProfile') renderProfile();
+  if(pageId==='pageNewborn') renderNewbornInfo();
+  if(pageId==='pageSettings') renderSettings();
+  window.scrollTo(0,0);
+}
+
+// ══════════════════════════════════════════
+//  DOSE GENERATION
+// ══════════════════════════════════════════
+const getDosesForDay = (med, date) => {
+  const dk       = dayKey(date);
+  const medStart = new Date(med.startDate+'T00:00:00');
+  const medEnd   = new Date(medStart);
+  medEnd.setDate(medEnd.getDate() + (med.duration===999 ? 3650 : med.duration-1));
+  if (dk < dayKey(medStart) || dk > dayKey(medEnd)) return [];
+  const [sh,sm] = med.startTime.split(':').map(Number);
+  const baseOffset = reschedOffsets[med.id] || 0;
+  const startDT = new Date(medStart);
+  startDT.setHours(sh,sm,0,0);
+  startDT.setMinutes(startDT.getMinutes() + baseOffset);
+  const dayStart = new Date(date); dayStart.setHours(0,0,0,0);
+  const dayEnd   = new Date(date); dayEnd.setHours(23,59,59,999);
+  let cursor = new Date(startDT);
+  const intervalMs = med.interval * 3600000;
+  while (cursor < dayStart) cursor = new Date(cursor.getTime() + intervalMs);
+  const doses = [];
+  while (cursor <= dayEnd) {
+    doses.push({ time:fmtT(cursor.getHours(),cursor.getMinutes()), h:cursor.getHours(), m:cursor.getMinutes(), isRescheduled:baseOffset!==0 });
+    cursor = new Date(cursor.getTime() + intervalMs);
+  }
+  return doses;
+};
+
+const takenKey = (mid,dk,time) => `${mid}__${dk}__${time}`;
+
+const applyReschedule = (medId, scheduledH, scheduledM) => {
+  const now=new Date(), nowMin=now.getHours()*60+now.getMinutes(), schedMin=scheduledH*60+scheduledM;
+  const delta = nowMin-schedMin;
+  if(Math.abs(delta)<2) return null;
+  reschedOffsets[medId] = (reschedOffsets[medId]||0) + delta;
+  save(); return delta;
+};
+
+// ══════════════════════════════════════════
+//  VIEW SWITCH
+// ══════════════════════════════════════════
+function switchView(v){
+  currentView=v;
+  document.getElementById('dayView').style.display  = v==='day'?'block':'none';
+  document.getElementById('weekView').style.display = v==='week'?'block':'none';
+  document.getElementById('btnDay').classList.toggle('active',v==='day');
+  document.getElementById('btnWeek').classList.toggle('active',v==='week');
+  v==='week'?renderWeek():renderDay();
+}
+function changeDay(o){ currentDayOffset+=o; renderDay(); }
+
+// ══════════════════════════════════════════
+//  DAY RENDER
+// ══════════════════════════════════════════
+function getCatLabel(cat){
+  const map={syrup:'شراب',pill:'حبوب',antibiotic:'مضاد حيوي',spray:'بخاخ',suppository:'لبوس',inhale:'استنشاق',drops:'قطرة',injection:'حقنة',cream:'كريم'};
+  return map[cat]||cat||'';
+}
+function getCatIcon(cat){
+  const map={syrup:'🧪',pill:'💊',antibiotic:'🦠',spray:'💨',suppository:'🟣',inhale:'🌬️',drops:'💧',injection:'💉',cream:'🧴'};
+  return map[cat]||(cat?'💊':'💊');
+}
+function getCatCls(cat){
+  const map={syrup:'cat-syrup',pill:'cat-pill',antibiotic:'cat-antibiotic',spray:'cat-spray',suppository:'cat-suppository',inhale:'cat-inhale',drops:'cat-drops',injection:'cat-injection',cream:'cat-cream'};
+  return map[cat]||'';
+}
+
+function filterSection(sec){
+  activeDoseFilter = sec;
+  ['taken','missed','upcoming','all'].forEach(s=>{
+    const btn = document.getElementById('tab'+s.charAt(0).toUpperCase()+s.slice(1));
+    if(btn) btn.classList.toggle('active-tab', s===sec);
+  });
+  renderDay();
+}
+
+function renderDay(){
+  const date=getDisplayDate(), now=new Date();
+  const isToday=dayKey(date)===dayKey(now);
+  // Period label
+  const h=now.getHours();
+  const period = h>=5&&h<12?'🌅 ص':h>=12&&h<17?'☀️ ظ':h>=17&&h<20?'🌆 م':'🌙 ي';
+  const dayName=isToday?('اليوم '+period):(currentDayOffset===-1?'أمس':(currentDayOffset===1?'غداً':arabicDay[date.getDay()]));
+  document.getElementById('dayTitle').textContent=dayName;
+  document.getElementById('dayDate').textContent=fmtDate(date);
+
+  const dk=dayKey(date), allDoses=[];
+  medicines.forEach(med=>{
+    getDosesForDay(med,date).forEach(dose=>{
+      const key=takenKey(med.id,dk,dose.time), taken=takenLog[key];
+      const nowStr=fmtT(now.getHours(),now.getMinutes());
+      let status='upcoming';
+      if(taken) status='taken';
+      else if(isToday&&dose.time<nowStr) status='missed';
+      allDoses.push({med,dose,key,status,taken});
+    });
+  });
+  allDoses.sort((a,b)=>a.dose.time.localeCompare(b.dose.time));
+
+  const takenArr   = allDoses.filter(d=>d.status==='taken');
+  const missedArr  = allDoses.filter(d=>d.status==='missed');
+  const upcomingArr= allDoses.filter(d=>d.status==='upcoming');
+
+  // Update header bands
+  const hdrT=document.getElementById('hdrTaken'),hdrM=document.getElementById('hdrMissed'),hdrU=document.getElementById('hdrUpcoming');
+  if(hdrT) hdrT.textContent=takenArr.length;
+  if(hdrM) hdrM.textContent=missedArr.length;
+  if(hdrU) hdrU.textContent=upcomingArr.length;
+
+  // Update section tab counts
+  const ct=document.getElementById('cntTaken'),cm=document.getElementById('cntMissed'),cu=document.getElementById('cntUpcoming');
+  if(ct) ct.textContent=takenArr.length;
+  if(cm) cm.textContent=missedArr.length;
+  if(cu) cu.textContent=upcomingArr.length;
+
+  // Which to show
+  let toShow = allDoses;
+  if(activeDoseFilter==='taken')    toShow=takenArr;
+  else if(activeDoseFilter==='missed')   toShow=missedArr;
+  else if(activeDoseFilter==='upcoming') toShow=upcomingArr;
+
+  // Next alarm index
+  let nextAlarmIdx=-1;
+  if(isToday){ for(let i=0;i<allDoses.length;i++){if(allDoses[i].status==='upcoming'){nextAlarmIdx=i;break;}}}
+
+  const list=document.getElementById('doseList');
+  if(!toShow.length){
+    const emptyMsgs={taken:'لا توجد جرعات مأخوذة',missed:'لا توجد جرعات فائتة',upcoming:'لا توجد جرعات قادمة',all:'لا توجد جرعات لهذا اليوم'};
+    list.innerHTML=`<div class="empty-state"><div class="e-icon">💊</div><p>${emptyMsgs[activeDoseFilter]||''}<br><small>اضغط + لإضافة دواء</small></p></div>`;
+    return;
+  }
+
+  list.innerHTML=toShow.map((d,idx)=>{
+    const isNext=allDoses.indexOf(d)===nextAlarmIdx;
+    const cls=`dose-card ${isNext?'next-alarm':d.status}`;
+    const medIcon = d.med.cat ? getCatIcon(d.med.cat) : (d.med.icon||'💊');
+    const picHtml = d.med.photo
+      ? `<img class="med-pic" src="${d.med.photo}" alt="${d.med.name}">`
+      : `<div class="med-pic-placeholder">${medIcon}</div>`;
+    const doseDisplay = d.med.doseAmt ? `${d.med.doseAmt} ${d.med.doseUnit||'مل'}` : (d.med.dose||'');
+    const catLabel = d.med.cat ? `<span class="cat-badge ${getCatCls(d.med.cat)}">${getCatIcon(d.med.cat)} ${getCatLabel(d.med.cat)}</span>` : '';
+    const badge = d.status==='taken'?`<span class="badge badge-taken">✓ تم</span>`:
+                  isNext?`<span class="badge badge-next">⏰ التالي</span>`:
+                  d.status==='missed'?`<span class="badge badge-missed">فائتة</span>`:'';
+    return `<div class="${cls}" onclick="openDoseAction('${d.med.id}','${d.dose.time}','${dk}',${d.dose.h},${d.dose.m})">
+      ${picHtml}
+      <div class="dose-info">
+        <div class="dose-name">${d.med.name}</div>
+        <div class="dose-detail">${d.med.notes||'كل '+d.med.interval+' ساعة'}</div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:3px">
+          ${doseDisplay?`<div class="dose-qty">📏 ${doseDisplay}</div>`:''}
+          ${catLabel}${badge}
+        </div>
+      </div>
+      <div class="dose-time ${d.status}">${fmt12(d.dose.time)}</div>
+      <button class="check-btn ${d.status==='taken'?'checked':''}" onclick="event.stopPropagation();quickTake('${d.med.id}','${dk}','${d.dose.time}',${d.dose.h},${d.dose.m})">✓</button>
+    </div>`;
+  }).join('');
+}
+// Quick-take from checkmark button (no modal)
+function quickTake(medId,dk,time,h,m){
+  const key=takenKey(medId,dk,time);
+  if(takenLog[key]){
+    delete takenLog[key];
+    save(); renderDay(); return;
+  }
+  // Take at current time and reschedule
+  _applyTakeAtTime(medId,dk,time,h,m, new Date());
+}
+
+function toggleDose(medId,dk,time,h,m){
+  quickTake(medId,dk,time,h,m);
+}
+
+// Open the full dose action modal
+function openDoseAction(medId,time,dk,h,m){
+  const med=medicines.find(m2=>m2.id===medId); if(!med) return;
+  _pendingAction={medId,dk,time,h,m};
+  const now=new Date();
+  const nowStr=fmtT(now.getHours(),now.getMinutes());
+  const doseDisplay=med.doseAmt?`${med.doseAmt} ${med.doseUnit||'مل'}`:(med.dose||'');
+  const key=takenKey(medId,dk,time), taken=takenLog[key];
+
+  const medIcon = med.cat ? getCatIcon(med.cat) : (med.icon||'💊');
+  document.getElementById('actionModalTitle').textContent = medIcon + ' ' + med.name;
+
+  // Med pic or icon
+  const picEl = document.getElementById('actionMedPic');
+  if(med.photo){
+    picEl.innerHTML = `<img src="${med.photo}" style="width:44px;height:44px;object-fit:cover;border-radius:10px;border:2px solid var(--border)">`;
+  } else {
+    picEl.textContent = medIcon;
+  }
+
+  document.getElementById('actionModalDesc').innerHTML =
+    `<strong style="font-size:.9rem;color:var(--text)">${med.name}</strong><br>`+
+    `الجرعة: <strong style="color:var(--primary)">${doseDisplay||'—'}</strong> &nbsp;·&nbsp; الميعاد: <strong style="color:var(--primary)">${fmt12(time,false)}</strong>`+
+    (taken?'<br><span style="color:var(--teal);font-weight:700;font-size:.8rem">✅ تم أخذها مسبقاً</span>':'');
+  document.getElementById('nowTimeLabel').textContent = fmt12(nowStr,false);
+  document.getElementById('schedTimeLabel').textContent = fmt12(time,false);
+  document.getElementById('customTimeRow').classList.remove('show');
+  document.getElementById('customTimeInput').value = nowStr;
+  document.getElementById('doseActionModal').classList.add('open');
+}
+
+function _applyTakeAtTime(medId,dk,time,schedH,schedM,actualDate){
+  const key=takenKey(medId,dk,time);
+  // Compute delta between actual take time and scheduled time
+  const actualH=actualDate.getHours(), actualM=actualDate.getMinutes();
+  const delta=(actualH*60+actualM)-(schedH*60+schedM);
+  if(Math.abs(delta)>=2){
+    reschedOffsets[medId]=(reschedOffsets[medId]||0)+delta;
+    const banner=document.getElementById('reschedBanner'), txt=document.getElementById('reschedText');
+    if(txt) txt.textContent=`تم تحديث جدول الجرعات القادمة (${delta>0?'+':'-'}${Math.abs(delta)} دقيقة)`;
+    if(banner) { banner.classList.add('show'); setTimeout(()=>banner.classList.remove('show'),4000); }
+  }
+  takenLog[key]={ts:actualDate.getTime(),takenAt:fmtT(actualH,actualM),delta:delta||0};
+  playSound('taken');
+  if(settings.vibrationEnabled&&navigator.vibrate) navigator.vibrate([100,50,100]);
+  save(); renderDay();
+}
+
+function doTakeNow(){
+  if(!_pendingAction) return;
+  const {medId,dk,time,h,m}=_pendingAction;
+  _applyTakeAtTime(medId,dk,time,h,m,new Date());
+  closeAllModals(); showInfoToast('تم تسجيل الجرعة ✓');
+}
+
+function doTakeOnSchedule(){
+  if(!_pendingAction) return;
+  const {medId,dk,time,h,m}=_pendingAction;
+  // Take exactly at scheduled time — no delta, no rescheduling
+  const key=takenKey(medId,dk,time);
+  takenLog[key]={ts:Date.now(),takenAt:time,delta:0};
+  playSound('taken');
+  if(settings.vibrationEnabled&&navigator.vibrate) navigator.vibrate([100,50,100]);
+  save(); renderDay(); closeAllModals(); showInfoToast('تم تسجيل الجرعة بالميعاد ✓');
+}
+
+function showCustomTime(){
+  document.getElementById('customTimeRow').classList.add('show');
+}
+
+function doTakeCustom(){
+  if(!_pendingAction) return;
+  const {medId,dk,time,h,m}=_pendingAction;
+  const val=document.getElementById('customTimeInput').value;
+  if(!val) return;
+  const [ch,cm]=val.split(':').map(Number);
+  const customDate=new Date(); customDate.setHours(ch,cm,0,0);
+  _applyTakeAtTime(medId,dk,time,h,m,customDate);
+  closeAllModals(); showInfoToast('تم تسجيل الجرعة بالوقت المخصص ✓');
+}
+
+function doSkipDose(){
+  if(!_pendingAction) return;
+  const {medId,dk,time}=_pendingAction;
+  const key=takenKey(medId,dk,time);
+  takenLog[key]={ts:Date.now(),skipped:true,delta:0};
+  save(); renderDay(); closeAllModals(); showInfoToast('تم تخطي الجرعة');
+}
+
+// ── MANAGE ACTIONS ────────────────────────────────────────────────────────
+
+function openQuickEditDose(){
+  if(!_pendingAction) return;
+  const med=medicines.find(m=>m.id===_pendingAction.medId); if(!med) return;
+  document.getElementById('quickDoseTitle').textContent=(med.cat?getCatIcon(med.cat):'💊')+' '+med.name;
+  document.getElementById('quickDoseDesc').textContent='تعديل الجرعة والتكرار';
+  document.getElementById('qDoseAmt').value=med.doseAmt||'';
+  document.getElementById('qDoseUnit').value=med.doseUnit||'مل';
+  document.getElementById('qInterval').value=med.interval||6;
+  document.getElementById('qNotes').value=med.notes||'';
+  document.getElementById('quickDoseModal').classList.add('open');
+}
+
+function saveQuickEditDose(){
+  if(!_pendingAction) return;
+  const idx=medicines.findIndex(m=>m.id===_pendingAction.medId);
+  if(idx===-1) return;
+  const doseAmt=parseFloat(document.getElementById('qDoseAmt').value)||0;
+  const doseUnit=document.getElementById('qDoseUnit').value;
+  medicines[idx]=Object.assign({},medicines[idx],{
+    doseAmt: doseAmt||null,
+    doseUnit,
+    dose: doseAmt?(doseAmt+' '+doseUnit):'',
+    interval: parseInt(document.getElementById('qInterval').value)||6,
+    notes: document.getElementById('qNotes').value.trim()
+  });
+  save(); renderDay(); closeAllModals();
+  showInfoToast('تم تحديث الجرعة ✓');
+}
+
+function openQuickEditTime(){
+  if(!_pendingAction) return;
+  const med=medicines.find(m=>m.id===_pendingAction.medId); if(!med) return;
+  document.getElementById('quickTimeTitle').textContent=(med.cat?getCatIcon(med.cat):'⏰')+' '+med.name;
+  document.getElementById('quickTimeDesc').textContent='الوقت الحالي: '+fmt12(med.startTime||'08:00',false);
+  // Show effective start time (with offset applied)
+  const baseOffset=reschedOffsets[med.id]||0;
+  const [sh,sm]=( med.startTime||'08:00' ).split(':').map(Number);
+  const effMin=(sh*60+sm+baseOffset+1440)%1440;
+  const effH=Math.floor(effMin/60), effM=effMin%60;
+  document.getElementById('qStartTime').value=pad(effH)+':'+pad(effM);
+  document.getElementById('quickTimeModal').classList.add('open');
+}
+
+function setTimeNow(){
+  const n=new Date();
+  document.getElementById('qStartTime').value=pad(n.getHours())+':'+pad(n.getMinutes());
+}
+
+function setTimeOriginal(){
+  if(!_pendingAction) return;
+  const med=medicines.find(m=>m.id===_pendingAction.medId); if(!med) return;
+  document.getElementById('qStartTime').value=med.startTime||'08:00';
+}
+
+function saveQuickEditTime(){
+  if(!_pendingAction) return;
+  const idx=medicines.findIndex(m=>m.id===_pendingAction.medId);
+  if(idx===-1) return;
+  const newTime=document.getElementById('qStartTime').value;
+  if(!newTime) return;
+  // Update startTime and clear reschedule offset (new baseline)
+  medicines[idx]=Object.assign({},medicines[idx],{startTime:newTime});
+  reschedOffsets[_pendingAction.medId]=0;
+  save(); renderDay(); closeAllModals();
+  showInfoToast('تم تحديث توقيت الجرعات القادمة ✓');
+}
+
+function doResetSchedule(){
+  if(!_pendingAction) return;
+  const med=medicines.find(m=>m.id===_pendingAction.medId); if(!med) return;
+  if(!confirm('إعادة ضبط الجدول للتوقيت الأصلي: '+fmt12(med.startTime||'08:00',false)+'؟')) return;
+  reschedOffsets[_pendingAction.medId]=0;
+  save(); renderDay(); closeAllModals();
+  showInfoToast('تم إعادة ضبط الجدول ✓');
+}
+
+function doDeleteFuture(){
+  if(!_pendingAction) return;
+  const med=medicines.find(m=>m.id===_pendingAction.medId); if(!med) return;
+  if(!confirm('حذف جميع الجرعات القادمة لـ "'+med.name+'" من اليوم فصاعداً?')) return;
+  // Set end date to yesterday
+  const yesterday=new Date(); yesterday.setDate(yesterday.getDate()-1);
+  const idx=medicines.findIndex(m=>m.id===_pendingAction.medId);
+  medicines[idx]=Object.assign({},medicines[idx],{
+    duration: Math.max(1, Math.floor((yesterday - new Date(medicines[idx].startDate+'T00:00:00'))/(1000*60*60*24))+1)
+  });
+  save(); renderDay(); closeAllModals();
+  showInfoToast('تم حذف الجرعات القادمة');
+}
+
+function doOpenFullEdit(){
+  if(!_pendingAction) return;
+  closeAllModals();
+  setTimeout(()=>openEditModal(_pendingAction.medId),200);
+}
+
+function doDeleteMedicine(){
+  if(!_pendingAction) return;
+  const med=medicines.find(m=>m.id===_pendingAction.medId); if(!med) return;
+  if(!confirm('حذف دواء "'+med.name+'" وجميع سجلاته نهائياً؟')) return;
+  medicines=medicines.filter(m=>m.id!==_pendingAction.medId);
+  delete reschedOffsets[_pendingAction.medId];
+  // Remove taken log entries for this med
+  Object.keys(takenLog).forEach(k=>{ if(k.startsWith(_pendingAction.medId+'__')) delete takenLog[k]; });
+  save(); renderDay(); closeAllModals();
+  showInfoToast('تم حذف الدواء نهائياً 🗑️');
+}
+
+function openDoseDetail(medId,time,dk){
+  const med=medicines.find(m=>m.id===medId); if(!med) return;
+  const key=takenKey(medId,dk,time), taken=takenLog[key];
+  const doseDisplay = med.doseAmt ? `${med.doseAmt} ${med.doseUnit||'مل'}` : (med.dose||'غير محدد');
+  document.getElementById('doseModalTitle').textContent=`${med.icon||'💊'} ${med.name}`;
+  document.getElementById('doseModalContent').innerHTML=`
+    ${med.photo?`<img src="${med.photo}" style="width:100%;max-height:160px;object-fit:cover;border-radius:14px;margin-bottom:14px">`:''}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <div class="stat-card"><div class="stat-num" style="font-size:1.1rem">${fmt12(time,false)}</div><div class="stat-lbl">وقت الجرعة</div></div>
+      <div class="stat-card"><div class="stat-num" style="font-size:1.1rem;color:var(--pink)">${doseDisplay}</div><div class="stat-lbl">الجرعة</div></div>
+    </div>
+    <div class="info-card">
+      <h4>📋 تفاصيل الدواء</h4>
+      <p>التكرار: كل ${med.interval} ساعة<br>مدة العلاج: ${med.duration===999?'مستمر':med.duration+' يوم'}<br>${med.notes?'ملاحظات: '+med.notes:''}</p>
+    </div>
+    ${taken?`<div class="info-box" style="background:var(--green-light);color:var(--green)"><span>✅</span> تم أخذ الجرعة</div>`:''}
+    <button class="submit-btn" onclick="toggleDose('${medId}','${dk}','${time}',${parseInt(time)},${parseInt(time.split(':')[1])});closeAllModals()">${taken?'↩️ إلغاء التسجيل':'✅ تسجيل أخذ الجرعة'}</button>
+    <br><button onclick="openEditModal('${medId}');closeAllModals()" style="background:var(--primary-pale);border:none;color:var(--primary);border-radius:10px;padding:10px 16px;font-family:'Cairo',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;width:100%;margin-top:8px">✏️ تعديل الدواء</button>
+  `;
+  document.getElementById('doseModal').classList.add('open');
+}
+
+// ══════════════════════════════════════════
+//  WEEK RENDER
+// ══════════════════════════════════════════
+function renderWeek(){
+  const today=new Date(), todayKey=dayKey(today);
+  const weekDays=[];
+  for(let i=-3;i<=3;i++){const d=new Date(today);d.setDate(d.getDate()+i);weekDays.push(d);}
+  const dayNames=['أح','اث','ث','أر','خ','ج','س'];
+  document.getElementById('weekGrid').innerHTML=weekDays.map(d=>{
+    const dk=dayKey(d), isToday=dk===todayKey;
+    const dots=medicines.flatMap(med=>getDosesForDay(med,d).map(dose=>{
+      const key=takenKey(med.id,dk,dose.time), taken=takenLog[key];
+      const status=taken?'taken':(dk<todayKey?'missed':'upcoming');
+      return `<div class="week-dot ${status}"></div>`;
+    })).join('');
+    return `<div class="week-day-col" onclick="currentDayOffset=${Math.floor((d-today)/(86400000))};switchView('day')">
+      <div class="week-day-name">${dayNames[d.getDay()]}</div>
+      <div class="week-day-num ${isToday?'today':''}">${d.getDate()}</div>
+      <div class="week-dot-row">${dots}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('weekMedList').innerHTML=medicines.length?medicines.map(med=>{
+    const dots=weekDays.map(d=>{
+      const dk=dayKey(d), doses=getDosesForDay(med,d);
+      if(!doses.length) return `<div class="week-prog-dot" style="background:transparent"></div>`;
+      const taken=doses.some(dose=>takenLog[takenKey(med.id,dk,dose.time)]);
+      const missed=dk<dayKey(today)&&!taken&&doses.length;
+      return `<div class="week-prog-dot ${taken?'done':missed?'miss':'pend'}"></div>`;
+    }).join('');
+    const picHtml = med.photo
+      ? `<img class="week-med-pic" src="${med.photo}" alt="${med.name}">`
+      : `<div class="week-med-icon">${med.icon||'💊'}</div>`;
+    const doseDisplay = med.doseAmt ? `${med.doseAmt} ${med.doseUnit||'مل'}` : (med.dose||'');
+    return `<div class="week-med-row" onclick="openEditModal('${med.id}')">
+      ${picHtml}
+      <div class="week-med-info">
+        <div class="week-med-name">${med.name}</div>
+        <div class="week-med-detail">${doseDisplay?doseDisplay+' · ':''}كل ${med.interval} ساعة${med.notes?' · '+med.notes:''}</div>
+        <div class="week-progress">${dots}</div>
+      </div>
+    </div>`;
+  }).join(''):`<div class="empty-state"><div class="e-icon">💊</div><p>لا توجد أدوية</p></div>`;
+}
+
+// ══════════════════════════════════════════
+//  ADD / EDIT MODAL
+// ══════════════════════════════════════════
+function openAddModal(){
+  editingMedId=null; currentMedPhoto=null; selectedIcon='💊'; selectedCat='syrup';
+  document.getElementById('modalTitle').textContent='➕ إضافة دواء جديد';
+  document.getElementById('medName').value='';
+  document.getElementById('medDoseAmt').value='';
+  document.getElementById('medDoseUnit').value='مل';
+  document.getElementById('medInterval').value='6';
+  document.getElementById('medStartTime').value='08:00';
+  document.getElementById('medStartDate').value=dayKey(new Date());
+  document.getElementById('medDuration').value='7';
+  document.getElementById('medNotes').value='';
+  document.getElementById('deleteBtn').style.display='none';
+  document.getElementById('photoPreview').innerHTML='<div style="font-size:2rem;margin-bottom:4px">📷</div><div class="ph-hint">انقر لإضافة صورة الدواء</div>';
+  document.querySelectorAll('.icon-opt').forEach(o=>o.classList.toggle('selected',o.dataset.icon==='💊'));
+  document.querySelectorAll('.cat-opt').forEach(o=>o.classList.toggle('selected',o.dataset.cat==='syrup'));
+  document.getElementById('addModal').classList.add('open');
+}
+
+function openEditModal(medId){
+  const med=medicines.find(m=>m.id===medId); if(!med) return;
+  editingMedId=medId; currentMedPhoto=med.photo||null; selectedIcon=med.icon||'💊'; selectedCat=med.cat||'syrup';
+  document.getElementById('modalTitle').textContent='✏️ تعديل الدواء';
+  document.getElementById('medName').value=med.name||'';
+  document.getElementById('medDoseAmt').value=med.doseAmt||'';
+  document.getElementById('medDoseUnit').value=med.doseUnit||'مل';
+  document.getElementById('medInterval').value=med.interval||6;
+  document.getElementById('medStartTime').value=med.startTime||'08:00';
+  document.getElementById('medStartDate').value=med.startDate||dayKey(new Date());
+  document.getElementById('medDuration').value=med.duration||7;
+  document.getElementById('medNotes').value=med.notes||'';
+  document.getElementById('deleteBtn').style.display='block';
+  if(med.photo){
+    document.getElementById('photoPreview').innerHTML=`<img src="${med.photo}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;margin-bottom:6px"><div class="ph-hint">انقر لتغيير الصورة</div>`;
+  } else {
+    document.getElementById('photoPreview').innerHTML='<div style="font-size:2rem;margin-bottom:4px">📷</div><div class="ph-hint">انقر لإضافة صورة الدواء</div>';
+  }
+  document.querySelectorAll('.icon-opt').forEach(o=>o.classList.toggle('selected',o.dataset.icon===selectedIcon));
+  document.querySelectorAll('.cat-opt').forEach(o=>o.classList.toggle('selected',o.dataset.cat===selectedCat));
+  document.getElementById('addModal').classList.add('open');
+}
+
+function saveMedicine(){
+  const name = document.getElementById('medName').value.trim();
+  if(!name){
+    document.getElementById('medName').style.borderColor='var(--coral)';
+    document.getElementById('medName').focus();
+    setTimeout(()=>{document.getElementById('medName').style.borderColor='';},2000);
+    return;
+  }
+  const doseAmt   = parseFloat(document.getElementById('medDoseAmt').value) || 0;
+  const doseUnit  = document.getElementById('medDoseUnit').value;
+  const startDate = document.getElementById('medStartDate').value || dayKey(new Date());
+  const interval  = parseInt(document.getElementById('medInterval').value) || 6;
+  const duration  = parseInt(document.getElementById('medDuration').value) || 7;
+  const startTime = document.getElementById('medStartTime').value || '08:00';
+
+  // carry over existing photo if editing and no new photo was chosen
+  let photo = currentMedPhoto;
+  if(editingMedId && photo === null){
+    const existing = medicines.find(m => m.id === editingMedId);
+    if(existing) photo = existing.photo || null;
+  }
+
+  const data = {
+    id:        editingMedId || uid(),
+    name,
+    icon:      selectedIcon,
+    cat:       selectedCat,
+    photo,
+    doseAmt:   doseAmt || null,
+    doseUnit,
+    dose:      doseAmt ? (doseAmt + ' ' + doseUnit) : '',
+    interval,
+    startTime,
+    startDate,
+    duration,
+    notes:     document.getElementById('medNotes').value.trim(),
+    createdAt: Date.now()
+  };
+
+  if(editingMedId){
+    const idx = medicines.findIndex(m => m.id === editingMedId);
+    if(idx > -1) medicines[idx] = Object.assign({}, medicines[idx], data);
+  } else {
+    medicines.push(data);
+  }
+  save();
+  closeAllModals();
+  renderDay();
+  showInfoToast(editingMedId ? 'تم تحديث الدواء ✓' : 'تمت إضافة الدواء ✓');
+}
+
+function deleteMedicine(){
+  if(!editingMedId) return;
+  if(!confirm('هل تريد حذف هذا الدواء؟')) return;
+  medicines=medicines.filter(m=>m.id!==editingMedId);
+  delete reschedOffsets[editingMedId];
+  save(); closeAllModals(); renderDay();
+  showInfoToast('تم حذف الدواء');
+}
+
+function selectIcon(el){
+  document.querySelectorAll('.icon-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected'); selectedIcon=el.dataset.icon;
+}
+
+function selectCat(el){
+  document.querySelectorAll('.cat-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCat=el.dataset.cat;
+  // Auto-set matching icon
+  const icon=el.dataset.icon;
+  if(icon){
+    selectedIcon=icon;
+    document.querySelectorAll('.icon-opt').forEach(o=>o.classList.toggle('selected',o.dataset.icon===icon));
+  }
+}
+
+function triggerMedPhotoUpload(){ document.getElementById('medPhotoInput').click(); }
+function handleMedPhoto(e){
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    currentMedPhoto=ev.target.result;
+    document.getElementById('photoPreview').innerHTML=`<img src="${currentMedPhoto}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;margin-bottom:6px"><div class="ph-hint">انقر لتغيير الصورة</div>`;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ══════════════════════════════════════════
+//  PROFILE
+// ══════════════════════════════════════════
+function openProfileModal(){
+  document.getElementById('pName').value=profile.name||'';
+  document.getElementById('pDob').value=profile.dob||'';
+  document.getElementById('pGender').value=profile.gender||'ذكر';
+  document.getElementById('pWeight').value=profile.weight||'';
+  document.getElementById('pBloodType').value=profile.bloodType||'';
+  document.getElementById('pDoctor').value=profile.doctor||'';
+  document.getElementById('pHospital').value=profile.hospital||'';
+  document.getElementById('pAllergies').value=profile.allergies||'';
+  document.getElementById('profileModal').classList.add('open');
+}
+
+function saveProfile(){
+  profile={
+    ...profile,
+    name:document.getElementById('pName').value.trim(),
+    dob:document.getElementById('pDob').value,
+    gender:document.getElementById('pGender').value,
+    weight:document.getElementById('pWeight').value,
+    bloodType:document.getElementById('pBloodType').value,
+    doctor:document.getElementById('pDoctor').value.trim(),
+    hospital:document.getElementById('pHospital').value.trim(),
+    allergies:document.getElementById('pAllergies').value.trim()
+  };
+  save(); closeAllModals(); renderProfile(); updateClock();
+  showInfoToast('تم حفظ الملف الشخصي ✓');
+}
+
+function triggerAvatarUpload(){ document.getElementById('avatarInput').click(); }
+function handleAvatarChange(e){
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    profile.avatar=ev.target.result;
+    save(); renderProfile();
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderProfile(){
+  // Avatar
+  const avatarEl=document.getElementById('profileAvatarDisplay');
+  const emojiEl=document.getElementById('profileAvatarEmoji');
+  if(profile.avatar){
+    avatarEl.innerHTML=`<img src="${profile.avatar}" alt="صورة الطفل">`;
+  } else {
+    emojiEl.textContent=profile.gender==='أنثى'?'👧':'👶';
+  }
+  document.getElementById('profileNameDisplay').textContent=profile.name||'اسم الطفل';
+
+  // Detailed age
+  const ageDetails = profile.dob ? calcAgeDetails(profile.dob) : null;
+  const ageShort   = profile.dob ? calcAge(profile.dob) : '';
+  let ageHtml = '';
+  if(ageDetails){
+    const parts = [];
+    if(ageDetails.realYears > 0) parts.push(ageDetails.realYears + ' سنة');
+    if(ageDetails.months   > 0) parts.push(ageDetails.months   + ' شهر');
+    if(ageDetails.days     > 0) parts.push(ageDetails.days     + ' يوم');
+    ageHtml = parts.join(' و') || '0 أيام';
+  }
+  document.getElementById('profileAgeDisplay').textContent =
+    [ageHtml&&('العمر: '+ageHtml), profile.weight&&('الوزن: '+profile.weight+' كجم'), profile.bloodType&&('فصيلة الدم: '+profile.bloodType)].filter(Boolean).join(' · ')||'أضف معلومات الطفل';
+
+  // Age detail chips
+  const chips=[];
+  if(ageDetails){
+    chips.push('📅 ' + ageDetails.totalDays + ' يوم إجمالي');
+    chips.push('🗓️ ' + ageDetails.totalWeeks + ' أسبوع');
+    chips.push('📆 ' + ageDetails.totalMonths + ' شهر');
+    if(ageDetails.nextMilestone) chips.push('🎯 قادم: ' + ageDetails.nextMilestone.label);
+    if(ageDetails.lastMilestone && ageDetails.lastMilestone.at > 0) chips.push('✅ ' + ageDetails.lastMilestone.label);
+  }
+  if(profile.doctor)   chips.push('👨‍⚕️ ' + profile.doctor);
+  if(profile.hospital) chips.push('🏥 ' + profile.hospital);
+  if(profile.allergies) chips.push('⚠️ حساسية: ' + profile.allergies);
+  document.getElementById('profileChips').innerHTML=chips.map(c=>`<div class="p-chip">${c}</div>`).join('');
+
+  // Stats
+  document.getElementById('profileTotalMeds').textContent=medicines.length;
+  const adherence=calcOverallAdherence();
+  document.getElementById('profileAdherence').textContent=adherence+'%';
+  document.getElementById('profileStreak').textContent=calcStreak();
+
+  // Meds list
+  document.getElementById('profileMedsList').innerHTML=medicines.length?medicines.map(med=>{
+    const doseDisplay=med.doseAmt?`${med.doseAmt} ${med.doseUnit||'مل'}`:(med.dose||'');
+    const picHtml = med.photo
+      ? `<img class="week-med-pic" src="${med.photo}" alt="${med.name}">`
+      : `<div class="week-med-icon">${med.icon||'💊'}</div>`;
+    return `<div class="week-med-row">
+      ${picHtml}
+      <div class="week-med-info">
+        <div class="week-med-name">${med.name}</div>
+        <div class="week-med-detail">${doseDisplay?doseDisplay+' · ':''}كل ${med.interval} ساعة · ${med.duration===999?'مستمر':med.duration+' يوم'}</div>
+      </div>
+    </div>`;
+  }).join(''):`<div class="empty-state"><div class="e-icon">💊</div><p>لا توجد أدوية حالياً</p></div>`;
+}
+
+function shareProfile(){
+  const lines=['📋 ملف دواء الطفل','═══════════════'];
+  if(profile.name) lines.push(`👶 الاسم: ${profile.name}`);
+  if(profile.dob) lines.push(`🎂 العمر: ${calcAge(profile.dob)}`);
+  if(profile.weight) lines.push(`⚖️ الوزن: ${profile.weight} كجم`);
+  if(profile.bloodType) lines.push(`🩸 فصيلة الدم: ${profile.bloodType}`);
+  if(profile.doctor) lines.push(`👨‍⚕️ الطبيب: ${profile.doctor}`);
+  if(profile.allergies) lines.push(`⚠️ حساسية: ${profile.allergies}`);
+  lines.push('','💊 قائمة الأدوية:');
+  medicines.forEach(med=>{
+    const doseDisplay=med.doseAmt?`${med.doseAmt} ${med.doseUnit||'مل'}`:(med.dose||'');
+    lines.push(`• ${med.name}${doseDisplay?' — '+doseDisplay:''} — كل ${med.interval} ساعة${med.notes?' ('+med.notes+')':''}`);
+  });
+  lines.push('','📊 نسبة الالتزام: '+calcOverallAdherence()+'%');
+  lines.push('─────────────────');
+  lines.push('تم الإرسال من تطبيق مُذكِّر الدواء');
+  const text=lines.join('\n');
+  if(navigator.share){
+    navigator.share({title:'ملف دواء الطفل',text}).catch(()=>copyToClipboard(text));
+  } else copyToClipboard(text);
+}
+
+function copyToClipboard(text){
+  navigator.clipboard?.writeText(text).then(()=>showInfoToast('تم النسخ للحافظة ✓')).catch(()=>alert(text));
+}
+
+// ══════════════════════════════════════════
+//  STATISTICS
+// ══════════════════════════════════════════
+function calcOverallAdherence(){
+  const last14=[];
+  for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);last14.push(d);}
+  let total=0,taken=0;
+  medicines.forEach(med=>{
+    last14.forEach(d=>{
+      const dk=dayKey(d), doses=getDosesForDay(med,d);
+      total+=doses.length;
+      taken+=doses.filter(dose=>takenLog[takenKey(med.id,dk,dose.time)]).length;
+    });
+  });
+  return total?Math.round(taken/total*100):0;
+}
+
+function calcStreak(){
+  let streak=0, d=new Date();
+  while(true){
+    const dk=dayKey(d);
+    let hasAny=false,allTaken=true;
+    medicines.forEach(med=>{
+      const doses=getDosesForDay(med,d);
+      if(doses.length) hasAny=true;
+      doses.forEach(dose=>{ if(!takenLog[takenKey(med.id,dk,dose.time)]) allTaken=false; });
+    });
+    if(!hasAny||!allTaken) break;
+    streak++;
+    d.setDate(d.getDate()-1);
+    if(streak>365) break;
+  }
+  return streak;
+}
+
+function renderStats(){
+  const last7=[];
+  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);last7.push(d);}
+
+  // Big stats
+  const totalMeds=medicines.length;
+  const adherence=calcOverallAdherence();
+  const streak=calcStreak();
+  let totalDoses=0,takenCount=0;
+  medicines.forEach(med=>{
+    last7.forEach(d=>{
+      const dk=dayKey(d), doses=getDosesForDay(med,d);
+      totalDoses+=doses.length;
+      takenCount+=doses.filter(dose=>takenLog[takenKey(med.id,dk,dose.time)]).length;
+    });
+  });
+  document.getElementById('bigStatGrid').innerHTML=`
+    <div class="big-stat"><div class="bsn" style="color:var(--primary)">${totalMeds}</div><div class="bsl">الأدوية</div></div>
+    <div class="big-stat"><div class="bsn" style="color:var(--teal)">${adherence}%</div><div class="bsl">نسبة الالتزام</div></div>
+    <div class="big-stat"><div class="bsn" style="color:var(--gold)">${streak}</div><div class="bsl">أيام متتالية</div></div>
+    <div class="big-stat"><div class="bsn" style="color:var(--purple)">${takenCount}/${totalDoses}</div><div class="bsl">جرعات (7 أيام)</div></div>
+  `;
+
+  // Bar chart
+  const maxVal=Math.max(...last7.map(d=>{
+    const dk=dayKey(d);
+    return medicines.reduce((s,med)=>s+getDosesForDay(med,d).length,0)||1;
+  }),1);
+  const dayLabels=['أح','اث','ث','أر','خ','ج','س'];
+  document.getElementById('weekBarChart').innerHTML=last7.map(d=>{
+    const dk=dayKey(d);
+    let t=0,tk=0;
+    medicines.forEach(med=>{
+      const doses=getDosesForDay(med,d);
+      t+=doses.length;
+      tk+=doses.filter(dose=>takenLog[takenKey(med.id,dk,dose.time)]).length;
+    });
+    const h=t?Math.round(tk/t*100):0;
+    const color=h>=80?'var(--teal)':h>=50?'var(--gold)':'var(--coral)';
+    return `<div class="bar-col">
+      <div class="bar-val">${h}%</div>
+      <div class="bar-fill" style="height:${h}px;background:${color}"></div>
+      <div class="bar-lbl">${dayLabels[d.getDay()]}</div>
+    </div>`;
+  }).join('');
+
+  // Med adherence list
+  document.getElementById('medAdherenceList').innerHTML=medicines.map(med=>{
+    let t=0,tk=0;
+    last7.forEach(d=>{
+      const dk=dayKey(d), doses=getDosesForDay(med,d);
+      t+=doses.length;
+      tk+=doses.filter(dose=>takenLog[takenKey(med.id,dk,dose.time)]).length;
+    });
+    const pct=t?Math.round(tk/t*100):0;
+    const doseDisplay=med.doseAmt?`${med.doseAmt} ${med.doseUnit||'مل'}`:(med.dose||'');
+    const picHtml = med.photo
+      ? `<img class="med-stat-pic" src="${med.photo}" alt="${med.name}">`
+      : `<div class="med-stat-icon">${med.icon||'💊'}</div>`;
+    return `<div class="med-stat-row">
+      ${picHtml}
+      <div class="med-stat-info">
+        <div class="med-stat-name">${med.name}${doseDisplay?' ('+doseDisplay+')':''}</div>
+        <div class="med-stat-bar"><div class="med-stat-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="med-stat-pct">${pct}%</div>
+    </div>`;
+  }).join('')||'<p style="color:var(--muted);font-size:.82rem;text-align:center;padding:16px">لا توجد أدوية</p>';
+
+  // Best time stats
+  const timeCounts={};
+  Object.keys(takenLog).forEach(key=>{
+    const parts=key.split('__');
+    if(parts.length>=3){const t=parts[2].split(':')[0];timeCounts[t]=(timeCounts[t]||0)+1;}
+  });
+  const sorted=Object.entries(timeCounts).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('bestTimeStats').innerHTML=sorted.length
+    ?sorted.slice(0,3).map(([h,c])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>${fmt12(h+':00',false)}</span><span style="color:var(--teal);font-weight:700">${c} جرعة</span></div>`).join('')
+    :'لا توجد بيانات كافية بعد';
+}
+
+// ══════════════════════════════════════════
+//  NEWBORN INFO - EGYPT MOH VACCINES
+// ══════════════════════════════════════════
+const egyptVaccines = [
+  {age:'عند الولادة',name:'لقاح الالتهاب الكبدي B (الجرعة الأولى)',desc:'يُعطى خلال 24 ساعة من الولادة. يحمي من فيروس التهاب الكبد B.',doses:3,done:0},
+  {age:'عند الولادة',name:'لقاح السل BCG',desc:'يُعطى مرة واحدة عند الولادة. يحمي من السل بأنواعه.',doses:1,done:0},
+  {age:'الشهر الثاني',name:'خماسي اللقاح (DTP + Hib + IPV)',desc:'يحمي من: الدفتيريا، السعال الديكي، الكزاز، المستدمية النزلية، شلل الأطفال (الجرعة الأولى).',doses:3,done:0},
+  {age:'الشهر الثاني',name:'لقاح الالتهاب الكبدي B (الجرعة الثانية)',desc:'الجرعة الثانية من لقاح الكبد B.',doses:3,done:1},
+  {age:'الشهر الثاني',name:'لقاح الروتا (الجرعة الأولى)',desc:'يحمي من فيروس الروتا المسبب للإسهال الحاد. يُعطى عن طريق الفم.',doses:2,done:0},
+  {age:'الشهر الرابع',name:'خماسي اللقاح (الجرعة الثانية)',desc:'الجرعة الثانية من اللقاح الخماسي.',doses:3,done:1},
+  {age:'الشهر الرابع',name:'لقاح الروتا (الجرعة الثانية)',desc:'الجرعة الثانية والأخيرة من لقاح الروتا.',doses:2,done:1},
+  {age:'الشهر السادس',name:'خماسي اللقاح (الجرعة الثالثة)',desc:'الجرعة الثالثة والأخيرة من اللقاح الخماسي.',doses:3,done:2},
+  {age:'الشهر السادس',name:'لقاح الالتهاب الكبدي B (الجرعة الثالثة)',desc:'الجرعة الثالثة والأخيرة من لقاح الكبد B.',doses:3,done:2},
+  {age:'الشهر التاسع',name:'لقاح الحصبة MMR (الجرعة الأولى)',desc:'يحمي من الحصبة والنكاف والحصبة الألمانية.',doses:2,done:0},
+  {age:'الشهر الثاني عشر',name:'لقاح المكورات الرئوية PCV (الجرعة الثالثة)',desc:'يحمي من الالتهاب الرئوي والتهاب السحايا.',doses:3,done:2},
+  {age:'18 شهراً',name:'لقاح الحصبة MMR (الجرعة الثانية)',desc:'الجرعة التنشيطية من لقاح MMR.',doses:2,done:1},
+  {age:'18 شهراً',name:'منشط خماسي اللقاح DTP',desc:'جرعة تنشيطية للدفتيريا والسعال الديكي والكزاز.',doses:1,done:0},
+  {age:'سنة ونصف إلى سنتين',name:'لقاح الالتهاب الكبدي A',desc:'يحمي من التهاب الكبد A. جرعتان بفارق 6 أشهر.',doses:2,done:0},
+  {age:'قبل دخول المدرسة (6 سنوات)',name:'جرعة تنشيطية DTP + IPV',desc:'جرعة تنشيطية قبل دخول المدرسة الابتدائية.',doses:1,done:0},
+];
+
+const newbornMeds = [
+  {name:'باراسيتامول (أسيتامينوفين) شراب',dose:'10-15 مجم/كجم كل 4-6 ساعات',use:'خافض للحرارة وتسكين الألم',note:'جرعة قصوى 5 مرات يومياً. للأطفال من الشهر الثاني.',color:'var(--teal)'},
+  {name:'قطرات الغاز (دايمثيكون / سيمثيكون)',dose:'20 مجم بعد كل رضعة',use:'المغص والغازات عند الرضع',note:'آمن من الولادة. يكسر فقاعات الهواء في المعدة.',color:'var(--gold)'},
+  {name:'قطرات فيتامين D3',dose:'400 وحدة دولية يومياً',use:'الوقاية من الكساح',note:'يُبدأ من الأسبوع الأول للأطفال الرضع المُرضعين طبيعياً.',color:'var(--purple)'},
+  {name:'قطرات الحديد',dose:'1-2 مجم/كجم/يوم',use:'الوقاية من فقر الدم',note:'يُبدأ من الشهر الرابع للأطفال المُرضعين طبيعياً.',color:'var(--coral)'},
+  {name:'محاليل الإماهة الفموية ORS',dose:'50-100 مل/كجم على 4 ساعات',use:'الإسهال والجفاف',note:'لا يُستبدل بمحلول مصنوع منزلياً. يُستشار الطبيب عند الإسهال الشديد.',color:'var(--primary-light)'},
+  {name:'قطرات الزنك',dose:'10-20 مجم يومياً',use:'دعم المناعة وتقليل مدة الإسهال',note:'يُعطى مع ORS عند الإسهال لمدة 10-14 يوم.',color:'var(--green)'},
+];
+
+const newbornTips = [
+  {icon:'🤱',title:'الرضاعة الطبيعية',content:'الرضاعة الطبيعية الحصرية حتى الشهر السادس هي أفضل غذاء للرضيع. توفر مناعة طبيعية وتقلل من خطر الالتهابات والحساسية.',type:'green'},
+  {icon:'😴',title:'وضعية النوم الآمنة',content:'ضع الرضيع دائماً على ظهره عند النوم. لا تضع وسائد أو ألعاب في السرير. حافظ على درجة حرارة الغرفة بين 18-22 درجة.',type:'alert'},
+  {icon:'🌡️',title:'متى تتصل بالطبيب؟',items:['حرارة أعلى من 38°م للأطفال أقل من 3 أشهر','رفض الرضاعة أو البكاء المستمر لساعات','تغير في لون الجلد (اصفرار، زرقة)','تشنجات أو فقدان الوعي','صعوبة في التنفس'],type:'urgent'},
+  {icon:'⚖️',title:'معدلات النمو الطبيعية',content:'يجب أن يكتسب الرضيع 150-200 جرام أسبوعياً في الأشهر الثلاثة الأولى. راجع طبيب الأطفال شهرياً لمتابعة منحنى النمو.',type:'normal'},
+  {icon:'🫧',title:'نظافة وتعقيم الأدوات',content:'عقّم الرضاعات والأدوات يومياً بالغليان أو معقم بخار. اغسل يديك قبل لمس الرضيع أو تحضير الرضعة دائماً.',type:'normal'},
+  {icon:'💊',title:'تجنب هذه الأدوية تماماً',items:['الأسبرين (خطر متلازمة ري)','الإيبوبروفين قبل الشهر السادس','المضادات الحيوية بدون وصفة طبيب','الأدوية العشبية وبعض القطرات التقليدية'],type:'alert'},
+  {icon:'👁️',title:'تطور الرؤية والإدراك',content:'الرضيع يرى جيداً على مسافة 20-30 سم عند الولادة. يتعرف على وجه الأم خلال أسابيع. يبدأ بتتبع الأشياء بعينيه في الشهر الثاني.',type:'normal'},
+  {icon:'🦷',title:'العناية بالأسنان',content:'نظّف لثة الرضيع بقطعة قماش مبللة. عند ظهور أول سن (6-8 أشهر)، استخدم فرشاة أسنان ناعمة جداً بدون معجون حتى سن السنة.',type:'normal'},
+];
+
+function renderNewbornInfo(){
+  // Vaccines
+  document.getElementById('vaccineTimeline').innerHTML=egyptVaccines.map(v=>{
+    const dots=Array(v.doses).fill(0).map((_,i)=>`<div class="vacc-dose-dot ${i<v.done?'done':i===v.done?'due':''}"></div>`).join('');
+    return `<div class="vacc-item">
+      <div class="vacc-age">📅 ${v.age}</div>
+      <div class="vacc-name">💉 ${v.name}</div>
+      <div class="vacc-desc">${v.desc}</div>
+      <div class="vacc-doses">${dots}</div>
+    </div>`;
+  }).join('');
+
+  // Medicines
+  document.getElementById('newbornMedsList').innerHTML=newbornMeds.map(m=>`
+    <div class="info-card">
+      <h4 style="color:${m.color}">💊 ${m.name}</h4>
+      <p><strong>الجرعة:</strong> ${m.dose}</p>
+      <p style="margin-top:4px"><strong>الاستخدام:</strong> ${m.use}</p>
+      <p style="margin-top:4px;color:var(--gold)">⚠️ ${m.note}</p>
+    </div>
+  `).join('');
+
+  // Tips
+  document.getElementById('newbornTipsList').innerHTML=newbornTips.map(t=>{
+    const cls=t.type==='alert'?'alert-card':t.type==='green'?'info-card green-card':'info-card';
+    const listHtml=t.items?`<ul style="margin-top:8px">${t.items.map(i=>`<li>${i}</li>`).join('')}</ul>`:'';
+    return `<div class="${cls}">
+      <h4>${t.icon} ${t.title}</h4>
+      ${t.content?`<p>${t.content}</p>`:''}
+      ${listHtml}
+    </div>`;
+  }).join('');
+}
+
+function switchInfoTab(tab, btn){
+  document.querySelectorAll('.info-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab'+tab.charAt(0).toUpperCase()+tab.slice(1)).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ══════════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════════
+function renderSettings(){
+  document.getElementById('toggleNotif').className='toggle '+(settings.notifEnabled?'on':'');
+  document.getElementById('toggleVibration').className='toggle '+(settings.vibrationEnabled?'on':'');
+  document.getElementById('toggleSnooze').className='toggle '+(settings.snoozeEnabled?'on':'');
+  document.querySelectorAll('.sound-opt').forEach(el=>{
+    el.classList.toggle('selected',el.dataset.sound===settings.alarmSound);
+  });
+}
+
+function toggleSetting(key){
+  settings[key]=!settings[key];
+  save(); renderSettings();
+  if(key==='notifEnabled'&&settings.notifEnabled&&'Notification'in window&&Notification.permission==='default'){
+    Notification.requestPermission();
+  }
+}
+
+function selectSound(el){
+  document.querySelectorAll('.sound-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  settings.alarmSound=el.dataset.sound;
+  save();
+}
+
+function previewSound(){
+  playSound('alarm');
+}
+
+function exportData(){
+  const data = {
+    version: 4,
+    exportedAt: new Date().toISOString(),
+    profile, settings,
+    medicines, takenLog, reschedOffsets
+  };
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], {type:'application/json'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'followupdose_backup_' + dayKey(new Date()) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showInfoToast('تم تصدير البيانات ✓');
+}
+
+function triggerImport(){
+  document.getElementById('importFileInput').value = '';
+  document.getElementById('importFileInput').click();
+}
+
+function handleImport(e){
+  const file = e.target.files[0];
+  if(!file){ return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      // Validate it's our backup format
+      if(!data.medicines && !data.profile){
+        alert('الملف غير صالح. يرجى اختيار ملف نسخة احتياطية صحيح.');
+        return;
+      }
+      const medCount = (data.medicines || []).length;
+      if(!confirm('سيتم استبدال جميع البيانات الحالية بالنسخة الاحتياطية\n(' + medCount + ' دواء)\nهل تريد المتابعة؟')){
+        return;
+      }
+      // Restore
+      medicines      = data.medicines      || [];
+      takenLog       = data.takenLog       || {};
+      reschedOffsets = data.reschedOffsets || {};
+      profile        = data.profile        || {};
+      if(data.settings) settings = Object.assign(settings, data.settings);
+      save();
+      renderDay();
+      renderProfile();
+      renderSettings();
+      showInfoToast('تم استيراد ' + medCount + ' دواء بنجاح ✓');
+    } catch(err) {
+      alert('خطأ في قراءة الملف: ' + err.message);
+    }
+  };
+  reader.readAsText(file, 'utf-8');
+}
+
+function confirmClearAll(){
+  if(confirm('هل أنت متأكد؟ سيتم حذف جميع البيانات نهائياً!')){
+    medicines=[]; takenLog={}; reschedOffsets={};
+    save(); renderDay(); renderProfile(); showInfoToast('تم مسح البيانات');
+  }
+}
+
+// ══════════════════════════════════════════
+//  ALARM SYSTEM
+// ══════════════════════════════════════════
+function getAudioCtx(){
+  if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playSound(type){
+  if(settings.alarmSound==='none') return;
+  try{
+    const ctx=getAudioCtx();
+    const soundMap = {
+      beep: ()=>{
+        [[880,0],[1100,.25],[880,.5]].forEach(([freq,delay])=>{
+          const o=ctx.createOscillator(),g=ctx.createGain();
+          o.connect(g);g.connect(ctx.destination);
+          o.frequency.value=freq; o.type='sine';
+          g.gain.setValueAtTime(.4,ctx.currentTime+delay);
+          g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+delay+.5);
+          o.start(ctx.currentTime+delay); o.stop(ctx.currentTime+delay+.5);
+        });
+      },
+      bell: ()=>{
+        [523,659,784,1047].forEach((freq,i)=>{
+          const o=ctx.createOscillator(),g=ctx.createGain();
+          o.connect(g);g.connect(ctx.destination);
+          o.frequency.value=freq; o.type='triangle';
+          g.gain.setValueAtTime(.3,ctx.currentTime+i*.15);
+          g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+i*.15+.8);
+          o.start(ctx.currentTime+i*.15); o.stop(ctx.currentTime+i*.15+.8);
+        });
+      },
+      chime: ()=>{
+        [1047,1319,1568].forEach((freq,i)=>{
+          const o=ctx.createOscillator(),g=ctx.createGain();
+          o.connect(g);g.connect(ctx.destination);
+          o.frequency.value=freq; o.type='sine';
+          g.gain.setValueAtTime(.2,ctx.currentTime+i*.3);
+          g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+i*.3+1.2);
+          o.start(ctx.currentTime+i*.3); o.stop(ctx.currentTime+i*.3+1.2);
+        });
+      },
+      urgent: ()=>{
+        for(let i=0;i<5;i++){
+          const o=ctx.createOscillator(),g=ctx.createGain();
+          o.connect(g);g.connect(ctx.destination);
+          o.frequency.value=i%2===0?1400:900; o.type='square';
+          g.gain.setValueAtTime(.3,ctx.currentTime+i*.18);
+          g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+i*.18+.15);
+          o.start(ctx.currentTime+i*.18); o.stop(ctx.currentTime+i*.18+.15);
+        }
+      },
+      soft: ()=>{
+        [440,550,660].forEach((freq,i)=>{
+          const o=ctx.createOscillator(),g=ctx.createGain();
+          o.connect(g);g.connect(ctx.destination);
+          o.frequency.value=freq; o.type='sine';
+          g.gain.setValueAtTime(.15,ctx.currentTime+i*.4);
+          g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+i*.4+1.5);
+          o.start(ctx.currentTime+i*.4); o.stop(ctx.currentTime+i*.4+1.5);
+        });
+      },
+      taken: ()=>{
+        const o=ctx.createOscillator(),g=ctx.createGain();
+        o.connect(g);g.connect(ctx.destination);
+        o.frequency.value=880; o.type='sine';
+        g.gain.setValueAtTime(.2,ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.3);
+        o.start(ctx.currentTime); o.stop(ctx.currentTime+.3);
+      }
+    };
+    const fn = type==='alarm' ? soundMap[settings.alarmSound] : soundMap[type];
+    if(fn) fn();
+  } catch(e){}
+}
+
+function checkAlarms(){
+  if(!settings.notifEnabled) return;
+  const now=new Date(), dk=dayKey(now), nowStr=fmtT(now.getHours(),now.getMinutes());
+  medicines.forEach(med=>{
+    getDosesForDay(med,now).forEach(dose=>{
+      if(dose.time===nowStr){
+        const key=takenKey(med.id,dk,dose.time);
+        const fid='fired_'+med.id+'__'+dk+'__'+dose.time;
+        if(!takenLog[key]&&!sessionStorage.getItem(fid)){
+          sessionStorage.setItem(fid,'1');
+          alarmQueue.push({med,dose,key,dk});
+          if(!alarmActive) fireNextAlarm();
+        }
+      }
+    });
+  });
+}
+
+// ── Alarm clock display ─────────────────────────────────────────────────
+let alarmClockInterval = null;
+
+function updateAlarmClock(){
+  const n=new Date();
+  const h=n.getHours(), m=n.getMinutes();
+  const isAM = h<12;
+  const h12  = (h%12)||12;
+  const el   = document.getElementById('alarmClockDisplay');
+  const per  = document.getElementById('alarmPeriodDisplay');
+  if(el)  el.textContent  = h12+':'+pad(m);
+  if(per) per.textContent = isAM ? '🌅 صباحاً' : '🌙 مساءً';
+}
+
+function openAlarmScreen(item){
+  const doseDisplay = item.med.doseAmt
+    ? (item.med.doseAmt+' '+(item.med.doseUnit||'مل'))
+    : (item.med.dose||'');
+  const catIcon = item.med.cat ? getCatIcon(item.med.cat) : (item.med.icon||'💊');
+
+  // Icon / photo
+  const iconEl = document.getElementById('alarmIcon');
+  if(item.med.photo){
+    iconEl.innerHTML='<img src="'+item.med.photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+  } else {
+    iconEl.textContent = catIcon;
+  }
+
+  document.getElementById('alarmName').textContent   = item.med.name;
+  document.getElementById('alarmDetail').textContent =
+    (doseDisplay ? '💊 '+doseDisplay+'   ' : '') + '⏰ '+fmt12(item.dose.time, false);
+
+  // Live clock
+  updateAlarmClock();
+  if(alarmClockInterval) clearInterval(alarmClockInterval);
+  alarmClockInterval = setInterval(updateAlarmClock, 1000);
+
+  // Show fullscreen
+  const screen = document.getElementById('alarmScreen');
+  screen.style.display = 'flex';
+  // Shake animation on icon
+  const wrap = document.getElementById('alarmRingWrap');
+  wrap.style.animation = '';
+  setTimeout(()=>{ wrap.style.animation='alarm-shake .5s ease 3'; },100);
+
+  // Keep screen awake if supported
+  if(navigator.wakeLock){
+    navigator.wakeLock.request('screen').catch(()=>{});
+  }
+}
+
+function closeAlarmScreen(){
+  document.getElementById('alarmScreen').style.display='none';
+  if(alarmClockInterval){ clearInterval(alarmClockInterval); alarmClockInterval=null; }
+}
+
+function fireNextAlarm(){
+  if(!alarmQueue.length){ alarmActive=false; return; }
+  alarmActive=true;
+  const item=alarmQueue[0];
+  const doseDisplay=item.med.doseAmt?`${item.med.doseAmt} ${item.med.doseUnit||'مل'}`:(item.med.dose||'');
+
+  // Open fullscreen alarm
+  openAlarmScreen(item);
+
+  // Play alarm sound (repeating)
+  playAlarmLoop();
+
+  // Vibrate pattern
+  if(settings.vibrationEnabled&&navigator.vibrate)
+    navigator.vibrate([500,300,500,300,500,300,500]);
+
+  // System notification (for when browser is in background)
+  if('Notification'in window&&Notification.permission==='granted'){
+    const n = new Notification('💊 '+item.med.name, {
+      body:   'حان موعد الجرعة'+(doseDisplay?' — '+doseDisplay:''),
+      icon:   'icons/icon-192.png',
+      badge:  'icons/icon-72.png',
+      tag:    'alarm-'+item.med.id,
+      requireInteraction: true,
+      silent: false,
+      vibrate:[400,200,400,200,400]
+    });
+    n.onclick = () => { window.focus(); n.close(); };
+  }
+}
+
+let alarmLoopTimeout = null;
+function playAlarmLoop(){
+  if(alarmLoopTimeout) clearTimeout(alarmLoopTimeout);
+  if(!alarmActive) return;
+  playSound('alarm');
+  if(settings.vibrationEnabled&&navigator.vibrate) navigator.vibrate([400,200,400]);
+  alarmLoopTimeout = setTimeout(()=>{
+    if(alarmActive && document.getElementById('alarmScreen').style.display!=='none'){
+      playAlarmLoop();
+    }
+  }, 5000);
+}
+
+function dismissAlarm(){
+  closeAlarmScreen();
+  if(alarmLoopTimeout){ clearTimeout(alarmLoopTimeout); alarmLoopTimeout=null; }
+  alarmActive=false;
+  if(alarmQueue.length){
+    const item=alarmQueue.shift();
+    _applyTakeAtTime(item.med.id, item.dk||dayKey(new Date()), item.dose.time, item.dose.h, item.dose.m, new Date());
+  }
+  setTimeout(()=>{ if(alarmQueue.length) fireNextAlarm(); },600);
+}
+
+function skipAlarmDose(){
+  closeAlarmScreen();
+  if(alarmLoopTimeout){ clearTimeout(alarmLoopTimeout); alarmLoopTimeout=null; }
+  alarmActive=false;
+  if(alarmQueue.length){
+    const item=alarmQueue.shift();
+    const key=takenKey(item.med.id, item.dk||dayKey(new Date()), item.dose.time);
+    takenLog[key]={ts:Date.now(),skipped:true,delta:0};
+    save(); renderDay();
+    showInfoToast('تم تخطي الجرعة');
+  }
+  setTimeout(()=>{ if(alarmQueue.length) fireNextAlarm(); },600);
+}
+
+function snoozeAlarm(minutes){
+  const mins = (typeof minutes==='number') ? minutes : 10;
+  closeAlarmScreen();
+  if(alarmLoopTimeout){ clearTimeout(alarmLoopTimeout); alarmLoopTimeout=null; }
+  alarmActive=false;
+  if(alarmQueue.length){
+    const item=alarmQueue.shift();
+    showInfoToast('تم التأجيل '+mins+' دقيقة ⏰');
+    setTimeout(()=>{
+      alarmQueue.unshift(item);
+      const fid='fired_'+item.med.id+'__'+dayKey(new Date())+'__'+item.dose.time;
+      sessionStorage.removeItem(fid);
+      if(!alarmActive) fireNextAlarm();
+    }, mins*60*1000);
+  }
+}
+
+function showInfoToast(msg){
+  document.getElementById('toastIcon').textContent='✅';
+  document.getElementById('toastName').textContent=msg;
+  document.getElementById('toastDetail').textContent='';
+  const t=document.getElementById('alarmToast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ══════════════════════════════════════════
+//  MODAL HELPERS
+// ══════════════════════════════════════════
+function closeModal(e){if(e.target.classList.contains('modal-overlay'))closeAllModals();}
+function closeAllModals(){document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('open'));}
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+if('Notification'in window&&Notification.permission==='default') Notification.requestPermission();
+setInterval(checkAlarms,30000); checkAlarms();
+renderDay();
+renderProfile();
+renderNewbornInfo();
+renderSettings();
+</script>
+
+<!-- PWA -->
+<script>
+if('serviceWorker'in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js',{scope:'./',updateViaCache:'none'})
+      .then(reg=>{
+        // Listen for messages from SW
+        navigator.serviceWorker.addEventListener('message',e=>{
+          if(e.data&&e.data.type==='CHECK_ALARMS') checkAlarms();
+        });
+
+        // Check for updates every time page loads
+        reg.update();
+
+        // New SW waiting → activate it immediately
+        const applyUpdate = (worker) => {
+          worker.postMessage({type:'SKIP_WAITING'});
+        };
+        if(reg.waiting) applyUpdate(reg.waiting);
+        reg.addEventListener('updatefound',()=>{
+          const newWorker = reg.installing;
+          newWorker.addEventListener('statechange',()=>{
+            if(newWorker.state==='installed' && navigator.serviceWorker.controller){
+              applyUpdate(newWorker);
+            }
+          });
+        });
+
+        // When SW changes, reload to get fresh page
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange',()=>{
+          if(!refreshing){ refreshing=true; window.location.reload(); }
+        });
+
+        if('periodicSync'in reg) reg.periodicSync.register('check-alarms',{minInterval:3600000}).catch(()=>{});
+      }).catch(()=>{});
+  });
+}
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferredPrompt=e;
+  document.getElementById('installBanner').style.display='flex';
+});
+function installApp(){
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(c=>{
+    if(c.outcome==='accepted') document.getElementById('installBanner').style.display='none';
+    deferredPrompt=null;
+  });
+}
+document.addEventListener('click',function askNotif(){
+  if('Notification'in window&&Notification.permission==='default') Notification.requestPermission();
+  document.removeEventListener('click',askNotif);
+},{once:true});
+</script>
+</body>
+</html>
